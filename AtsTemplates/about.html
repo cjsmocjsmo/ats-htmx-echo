@@ -12,161 +12,6 @@
     <script src="/assets/htmx.min.js"></script>
 </head>
 
-<!-- <script src="https://unpkg.com/htmx.org@1.9.10"
-    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
-    crossorigin="anonymous"></script> -->
-
-<script src="/assets/htmx.min.js"></script>
-
-<style>
-    /* :root {
-        --font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-            Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        --font-mono: 'Fira Mono', monospace;
-        --color-bg-0: rgb(65, 12, 100);
-        --color-bg-1: black;
-        --color-bg-2: hsl(278, 79%, 50%);
-        --color-theme-1: #ff3e00;
-        --color-theme-2: #4075a6;
-        --color-text: rgba(0, 0, 0, 0.7);
-        --column-width: 42rem;
-        --column-margin-top: 4rem;
-        font-family: var(--font-body);
-        color: var(--color-text);
-        --accent: 136, 58, 234;
-        --accent-light: 224, 204, 250;
-        --accent-dark: 49, 10, 101;
-        --accent-gradient: linear-gradient(45deg,
-                rgb(var(--accent)),
-                rgb(var(--accent-light)) 30%,
-                white 60%);
-    }
-
-    body {
-        min-height: 100vh;
-        margin: 0;
-        background-attachment: fixed;
-        background-color: var(--color-bg-1);
-        background-size: 100vw 100vh;
-    }
-
-    main {
-        margin: auto;
-        padding: 1rem;
-        width: 800px;
-        max-width: calc(100% - 2rem);
-        color: white;
-        font-size: 20px;
-        line-height: 1.6;
-        min-height: 100vh;
-    } */
-
-    .head {
-        font-size: 2rem;
-        font-weight: bold;
-        color: purple;
-        margin: 1rem;
-    }
-
-    hr {
-        width: 75%;
-        height: 1.5px;
-        background-color: blue;
-    }
-
-    .txtDiv {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 3rem 0 3rem 0;
-        border: 2px solid blue;
-        border-radius: 8px;
-        width: 100%;
-    }
-
-    p {
-        font-size: 1.25rem;
-        color: antiquewhite;
-        padding: 7px;
-        margin: 1rem;
-    }
-
-    h1 {
-        text-decoration: none;
-        font-size: 2.25rem;
-        font-weight: bold;
-        color: antiquewhite;
-        text-align: center;
-        margin: 1rem;
-    }
-
-    /* .container {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        margin-top: 1rem;
-    }
-
-    .container a {
-        text-decoration: none;
-        color: purple;
-    }
-
-    .container a:hover {
-        color: #ec4e27;
-    }
-
-    .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-    }
-
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: blue;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-        position: absolute;
-        z-index: 1;
-        top: -5px;
-        left: 105%;
-
-    }
-
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-    }  */
-
-    @media (max-width: 768px) {
-        .txtDiv {
-            margin: 1rem;
-        }
-
-        p {
-            font-size: 1rem;
-            color: antiquewhite;
-            text-align: center;
-            margin: 0;
-        }
-
-        h1 {
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: antiquewhite;
-            text-align: center;
-            margin: 2.5rem 1rem 0rem 1rem;
-        }
-    }
-</style>
-
 <body>
 
     <main>
@@ -174,7 +19,7 @@
             <div class="tooltip">
                 <span class="tooltiptext">Home</span>
 
-                <a href="/">
+                <a class="atsLink" href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         class="bi bi-house-door-fill" viewBox="0 0 16 16">
                         <path
@@ -185,7 +30,7 @@
             </div>
             <div class="tooltip">
                 <span class="tooltiptext">Videos</span>
-                <a href="/videos">
+                <a class="atsLink" href="/videos">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         class="bi bi-camera-reels-fill" viewBox="0 0 16 16">
                         <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
@@ -198,7 +43,7 @@
             </div>
             <div class="tooltip">
                 <span class="tooltiptext">Images</span>
-                <a href="/images">
+                <a class="atsLink" href="/images">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                         class="bi bi-images" viewBox="0 0 16 16">
                         <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"></path>

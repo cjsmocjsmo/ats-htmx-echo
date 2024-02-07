@@ -38,6 +38,10 @@ body {
     width: 100%;
 }
 
+a.atsLink {
+    color: blue;
+}
+
 .instA {
     text-decoration: none;
     width: 75%;

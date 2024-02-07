@@ -40,15 +40,10 @@
     }
 }
 
-p {
+p.comStmt {
     font-size: 1.25rem;
     color: antiquewhite;
     margin: 1rem;
-}
-
-a {
-    color: blue;
-    /* text-decoration: none; */
 }
 
 .formDiv {
@@ -65,10 +60,6 @@ a {
     font-size: 1.75rem;
     margin-top: 2rem;
     color: purple;
-}
-
-h1 {
-    text-align: center;
 }
 
 .submitBtn {
