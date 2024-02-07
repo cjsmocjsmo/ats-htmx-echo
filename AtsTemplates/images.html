@@ -1,0 +1,302 @@
+{{ define "ats_images" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Alpha Tree Service Images page.">
+    <title>Media</title>
+</head>
+
+<!-- <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+    crossorigin="anonymous"></script> -->
+
+<script src="https://atsdo.xyz/htmx.min.js"></script>
+
+<style>
+    :root {
+        --font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+            Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        --font-mono: 'Fira Mono', monospace;
+        --color-bg-0: rgb(65, 12, 100);
+        /* --color-bg-1: hsl(208, 78%, 19%); */
+        --color-bg-1: black;
+        --color-bg-2: hsl(278, 79%, 50%);
+        --color-theme-1: #ff3e00;
+        --color-theme-2: #4075a6;
+        --color-text: rgba(0, 0, 0, 0.7);
+        --column-width: 42rem;
+        --column-margin-top: 4rem;
+        font-family: var(--font-body);
+        color: var(--color-text);
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(45deg,
+                rgb(var(--accent)),
+                rgb(var(--accent-light)) 30%,
+                white 60%);
+    }
+
+    body {
+        min-height: 100vh;
+        margin: 0;
+        background-attachment: fixed;
+        background-color: var(--color-bg-1);
+        background-size: 100vw 100vh;
+    }
+
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 800px;
+        max-width: calc(100% - 2rem);
+        min-height: 100vh;
+        color: white;
+        font-size: 20px;
+        line-height: 1.6;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        margin-top: 1rem;
+    }
+
+    .container a {
+        text-decoration: none;
+        color: purple;
+    }
+
+    .container a:hover {
+        color: #ec4e27;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: blue;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 105%;
+
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+
+    .instA {
+        text-decoration: none;
+        width: 75%;
+    }
+
+    .instructions {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border: 1px solid rgba(var(--accent-light), 25%);
+        border-radius: 8px;
+        background: linear-gradient(rgba(var(--accent-dark), 66%),
+                rgba(var(--accent-dark), 33%));
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1;
+        color: antiquewhite;
+        text-align: center;
+    }
+
+    a:hover {
+        color: green;
+    }
+
+    .instructions:hover {
+        border-color: green;
+        color: green;
+    }
+
+    .portDiv {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 2.5em;
+    }
+
+    .port {
+        width: 280px;
+        height: auto;
+        border-radius: 8px;
+        margin: 1em;
+    }
+
+    .landDiv {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .land {
+        width: 280px;
+        height: auto;
+        border-radius: 8px;
+        margin: 1em;
+    }
+</style>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="tooltip">
+                <span class="tooltiptext">Home</span>
+
+                <a href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <div class="tooltip">
+                <span class="tooltiptext">Videos</span>
+                <a href="/videos">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                        class="bi bi-camera-reels-fill" viewBox="0 0 16 16">
+                        <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+                        <path d="M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
+                        <path
+                            d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <div class="tooltip">
+                <span class="tooltiptext">Images</span>
+                <a href="/images">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                        class="bi bi-images" viewBox="0 0 16 16">
+                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"></path>
+                        <path
+                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <a class="instA" href="tel:3605168933">
+            <h1 class="instructions">360 516 8933</h1>
+        </a>
+        <div class="text-column">
+
+
+            <div class="landDiv">
+                <a href="/landscape/land01">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20201202_121518_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/landscape/land02">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20211023_111607_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/landscape/land03">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20220727_110613_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/landscape/land04">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20220731_112107_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/landscape/land05">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20220731_112129_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/landscape/land06">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20220731_112346_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/landscape/land07">
+                    <img class="land" src="https://atsdo.xyz/images/landscape/20220731_112348_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+            </div>
+
+            <a class="instA" href="tel:3605168933">
+                <h1 class="instructions">360 516 8933</h1>
+            </a>
+
+            <div class="portDiv">
+                <a href="/port/port1.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20190612_092955_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port2.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20190612_093224_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port3.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20190722_101948_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port4.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20190722_102001_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port5.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20190722_102058_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port6.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20200630_100214_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port7.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20200630_100322_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port8.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20200630_100327_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port9.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20200630_100331_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+                <a href="/port/port10.html">
+                    <img class="port" src="https://atsdo.xyz/images/portrait/20200819_145521_thumb.webp" alt="test1"
+                        width="280" height="200" />
+                </a>
+            </div>
+        </div>
+        <a class="instA" href="tel:3605168933">
+            <h1 class="instructions">360 516 8933</h1>
+        </a>
+    </main>
+</body>
+
+</html>
+
+{{ end }}

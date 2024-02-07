@@ -1,0 +1,348 @@
+{{ define "ats_estimates"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Alpha Tree Service Estimates page.">
+    <title>Estimates</title>
+</head>
+
+<!-- <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+    crossorigin="anonymous"></script> -->
+
+<script src="https://atsdo.xyz/htmx.min.js"></script>
+
+<style>
+    :root {
+        --font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+            Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        --font-mono: 'Fira Mono', monospace;
+        --color-bg-0: rgb(65, 12, 100);
+        /* --color-bg-1: hsl(208, 78%, 19%); */
+        --color-bg-1: black;
+        --color-bg-2: hsl(278, 79%, 50%);
+        --color-theme-1: #ff3e00;
+        --color-theme-2: #4075a6;
+        --color-text: rgba(0, 0, 0, 0.7);
+        --column-width: 42rem;
+        --column-margin-top: 4rem;
+        font-family: var(--font-body);
+        color: var(--color-text);
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(45deg,
+                rgb(var(--accent)),
+                rgb(var(--accent-light)) 30%,
+                white 60%);
+    }
+
+    body {
+        min-height: 100vh;
+        margin: 0;
+        background-attachment: fixed;
+        background-color: var(--color-bg-1);
+        background-size: 100vw 100vh;
+    }
+
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 800px;
+        max-width: calc(100% - 2rem);
+        color: white;
+        font-size: 20px;
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    .mainDiv {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .txtDiv {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        border: 2px solid blue;
+        border-radius: 8px;
+    }
+
+    form {
+        margin-bottom: 2rem;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        margin-bottom: 1rem;
+    }
+
+    .submitBtn {
+        box-shadow: 0 4px 6px 0 rgba(160, 83, 63, 0.1);
+        background-color: purple;
+        color: white;
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 1rem 2.5rem 1rem 2.5rem;
+        margin-top: 1rem;
+        border-radius: 8px;
+        border: 2px solid rgb(59, 224, 17);
+
+    }
+
+    .submitBtn:hover {
+        background-color: green;
+    }
+
+    .submitBtn:focus {
+        box-shadow: 0 0 0 4px rgba(160, 83, 63, 0.4);
+    }
+
+    .nameInput,
+    .addressInput,
+    .cityInput,
+    .phoneInput,
+    .emailInput,
+    .servDateInput,
+    .commentInput,
+    .filepickerInput {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 2px solid purple;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: grey;
+        font-size: large;
+
+    }
+
+    textarea {
+        width: 100%;
+        padding: 22px 50px;
+        margin: 8px 0;
+        display: block;
+        border: 2px solid purple;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: grey;
+        font-size: large;
+    }
+
+    .name-lable-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem 0, 1rem 0;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 22px 50px;
+        margin: 8px 0;
+        display: block;
+        border: 2px solid purple;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: grey;
+        font-size: large;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        margin-top: 1rem;
+    }
+
+    .container a {
+        text-decoration: none;
+        color: purple;
+    }
+
+    .container a:hover {
+        color: #ec4e27;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: blue;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 105%;
+
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="tooltip">
+                <span class="tooltiptext">Home</span>
+
+                <a href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <div class="tooltip">
+                <span class="tooltiptext">Videos</span>
+                <a href="/videos">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                        class="bi bi-camera-reels-fill" viewBox="0 0 16 16">
+                        <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+                        <path d="M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
+                        <path
+                            d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+            <div class="tooltip">
+                <span class="tooltiptext">Images</span>
+                <a href="/images">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                        class="bi bi-images" viewBox="0 0 16 16">
+                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"></path>
+                        <path
+                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="mainDiv">
+            <form action="https://atstest.xyz/addesti" method="POST" enctype="multipart/form-data"
+                class="w-full max-w-sm">
+                <div class="name-lable-div">
+                    <label>
+                        Name
+                    </label>
+
+                    <input name="name" class="nameInput" id="inline-name" type="text" placeholder="Herman Munster" />
+
+                </div>
+                <div class="name-lable-div">
+                    <label>
+                        Address
+                    </label>
+
+                    <input name="address" class="addressInput" id="inline-address" type="text"
+                        placeholder="1313 Mockingbird Lane" required />
+
+                </div>
+                <div class="name-lable-div">
+                    <label>
+                        City
+                    </label>
+
+                    <input name="city" class="cityInput" id="inline-city" type="text" placeholder="Mockingbird Heights"
+                        required />
+
+                </div>
+                <div class="name-lable-div">
+                    <label>
+                        Phone
+                    </label>
+
+                    <input name="phone" class="phoneInput" id="inline-phone" type="text" placeholder="666-555-5555"
+                        required />
+
+                </div>
+                <div class="name-lable-div">
+                    <label>
+                        Email
+                    </label>
+
+                    <input name="email" class="emailInput" id="inline-email" type="text"
+                        placeholder="herman@monster.com" required />
+
+                </div>
+
+                <div class="name-lable-div">
+                    <label>
+                        Service Date
+                    </label>
+
+                    <input name="reqdate" class="servDateInput" id="inline-reqdate" type="text" placeholder="01-20-2024"
+                        required />
+
+                </div>
+
+                <div class="name-lable-div">
+                    <label>
+                        Comment
+                    </label>
+
+                    <textarea name="comment" rows="5" class="commentInput" id="inline-comment"
+                        placeholder="Explain Problem Here" required>
+                        </textarea>
+
+                </div>
+                <div class="name-lable-div">
+                    <label>
+                        Pic/Vid File
+                    </label>
+
+                    <input name="filepicker" class="filepickerInput" type="file" id="inline-filepicker"
+                        accept="image/*,video/*" />
+
+                </div>
+
+
+
+                <button class="submitBtn" type="submit">
+                    Submit
+                </button>
+            </form>
+            <p>
+                Depending on your network uploading Image and Video files
+                may take a while.
+            </p>
+        </div>
+    </main>
+</body>
+
+</html>
+
+{{ end }}

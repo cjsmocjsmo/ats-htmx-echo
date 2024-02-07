@@ -1,0 +1,379 @@
+{{define "ats_index"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Alpha Tree Service.">
+    <title>Alpha Tree Service</title>
+</head>
+
+<!-- <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+    crossorigin="anonymous"></script> -->
+<script src="https://atsdo.xyz/htmx.min.js"></script>
+
+<style>
+    :root {
+        --font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+            Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        --font-mono: 'Fira Mono', monospace;
+        --color-bg-0: rgb(65, 12, 100);
+        /* --color-bg-1: hsl(208, 78%, 19%); */
+        --color-bg-1: black;
+        --color-bg-2: hsl(278, 79%, 50%);
+        --color-theme-1: #ff3e00;
+        --color-theme-2: #4075a6;
+        --color-text: rgba(0, 0, 0, 0.7);
+        --column-width: 42rem;
+        --column-margin-top: 4rem;
+        font-family: var(--font-body);
+        color: var(--color-text);
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(45deg,
+                rgb(var(--accent)),
+                rgb(var(--accent-light)) 30%,
+                white 60%);
+    }
+
+    body {
+        min-height: 100vh;
+        margin: 0;
+        background-attachment: fixed;
+        background-color: var(--color-bg-1);
+        background-size: 100vw 100vh;
+    }
+
+    .mainDiv {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .mainImg {
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+
+    .title {
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        color: antiquewhite
+    }
+
+    .instA {
+        text-decoration: none;
+        width: 75%;
+    }
+
+    .instructions {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border: 1px solid rgba(var(--accent-light), 25%);
+        border-radius: 8px;
+        background: linear-gradient(rgba(var(--accent-dark), 66%),
+                rgba(var(--accent-dark), 33%));
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 1;
+        color: antiquewhite;
+        text-align: center;
+    }
+
+    a:hover {
+        color: green;
+    }
+
+    .instructions:hover {
+        border-color: green;
+        color: green;
+    }
+
+    .emerg {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: red;
+        margin-bottom: 2rem;
+    }
+
+    .link-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(35ch, 1fr));
+        gap: 2rem;
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+
+    .link-card {
+        list-style: none;
+        display: flex;
+        padding: 1px;
+        background-color: #23262d;
+        background-image: none;
+        background-size: 400%;
+        border-radius: 7px;
+        background-position: 100%;
+        transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .link-card>a {
+        width: 100%;
+        text-decoration: none;
+        line-height: 1.4;
+        padding: calc(1.5rem - 1px);
+        border-radius: 8px;
+        color: white;
+        background-color: #23262d;
+        opacity: 0.8;
+    }
+
+    .link-card-h2 {
+        margin: 0;
+        font-size: 1.25rem;
+        transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .link-card-p {
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+    }
+
+    .link-card:is(:hover, :focus-within) {
+        background-position: 0;
+        background-image: var(--accent-gradient);
+    }
+
+    .link-card:is(:hover, :focus-within) h2 {
+        color: rgb(var(--accent-light));
+    }
+
+    .svgDiv {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: .5rem;
+        padding: 10px;
+    }
+
+    .txtDiv {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 3rem;
+        border: 2px solid blue;
+        border-radius: 8px;
+        width: 65%;
+    }
+
+    .txtName {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: antiquewhite;
+    }
+
+    .txtDate {
+        font-size: 1rem;
+        font-weight: 700;
+        color: antiquewhite;
+    }
+
+    .txttxt {
+        font-size: 1.25rem;
+        color: antiquewhite;
+        margin: 1rem;
+    }
+
+    footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        background: black;
+        color: white;
+        padding: 1rem;
+    }
+
+    @media (max-width: 400px) {}
+
+    @media (min-width: 375px) {
+        .txtDiv {
+            width: 97%;
+            margin: 0;
+        }
+
+        .txttxt {
+            font-size: 1rem;
+        }
+
+        .instructions {
+            font-size: 2.25rem;
+        }
+
+        .title {
+            font-size: 2.3rem;
+        }
+
+        .mainImg {
+            width: 100%;
+        }
+
+        main {
+            height: 260vh;
+        }
+    }
+</style>
+
+<body>
+    <main>
+        <div class="mainDiv">
+            <h1 class="title">Alpha Tree Service</h1>
+            <picture>
+                <source media="(min-width: 600px)" srcset="https://atsdo.xyz/images/landscape/main_img_600.webp" />
+                <source media="(min-width: 380px)" srcset="https://atsdo.xyz/images/landscape/main_img_400.webp" />
+                <img class="mainImg" src="https://atsdo.xyz/images/landscape/main_img.webp" alt="Alpha Tree Service" />
+            </picture>
+            <a class="instA" href="tel:3605168933">
+                <h1 class="instructions">360 516 8933</h1>
+            </a>
+            <p class="emerg">24/7 Emergency Service</p>
+
+            <div>
+                <ul class="link-card-grid">
+                    <li class="link-card">
+                        <a href="/about">
+                            <h2 class="link-card-h2">
+                                About
+                                <span>&rarr;</span>
+                            </h2>
+                            <p class="link-card-a">
+                                A brief history of Alpha Tree Service, along with our lisence, bond and insurance
+                                information.
+                            </p>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="/services">
+                            <h2 class="link-card-h2">
+                                Services
+                                <span>&rarr;</span>
+                            </h2>
+                            <p class="link-card-a">
+                                Come see what services we offer.
+                            </p>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="/estimates">
+                            <h2 class="link-card-h2">
+                                Estimates
+                                <span>&rarr;</span>
+                            </h2>
+                            <p class="link-card-a">
+                                Not sure how much your project will cost? We will happily come out and give you a free
+                                estimate. Schedule your estimate today!
+                            </p>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="/images">
+                            <h2 class="link-card-h2">
+                                Images
+                                <span>&rarr;</span>
+                            </h2>
+                            <p class="link-card-a">
+                                Explore our image gallery of past jobs done in Kitsap, Mason, Pierse counties.
+                            </p>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="/videos">
+                            <h2 class="link-card-h2">
+                                Videos
+                                <span>&rarr;</span>
+                            </h2>
+                            <p class="link-card-a">
+                                Explore our video gallery and sign up to our Youtube channel.
+                            </p>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="/comments">
+                            <h2 class="link-card-h2">
+                                Testimonials
+                                <span>&rarr;</span>
+                            </h2>
+                            <p class="link-card-a">
+                                Discover what our valued customers are saying. We would appreciate your feedback.
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="txtDiv">
+                <div class="svgDiv">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="purple" class="bi bi-star-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="purple" class="bi bi-star-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="purple" class="bi bi-star-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="purple" class="bi bi-star-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="purple" class="bi bi-star-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                </div>
+                <p class="txtName">Lora W.</p>
+                <p class="txtDate">May 21, 2023</p>
+                <p class="txttxt">A tree from my property uprooted and leaned on the neighbors shed,
+                    with the top 2/3 beyond the shed threatening the neighbor's house.
+                    I called a couple of big services that took 2-3 days to get me high bids.
+                    I heard about Curtis from a friend and gave him a call. He was in the
+                    area, went right over, called back with a bid that was less than half
+                    the other bids and took the tree down safely while there!
+                    Amazing service, quality work, reasonable price...perfect!
+                </p>
+            </div>
+            <a class="instA" href="tel:3605168933">
+                <h1 class="instructions">360 516 8933</h1>
+            </a>
+            <footer>
+                <p class="flag">Ask about Veterans Discounts!</p>
+
+            </footer>
+        </div>
+    </main>
+</body>
+
+</html>
+
+{{end}}
