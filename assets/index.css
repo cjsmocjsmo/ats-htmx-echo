@@ -24,9 +24,14 @@
     margin-bottom: 2rem;
 }
 
+.gridDiv {
+    display: block;
+    width: 85%;
+}
+
 .link-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(35ch, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(30ch, 2fr));
     gap: 2rem;
     padding: 0;
     margin-bottom: 1rem;
@@ -93,7 +98,7 @@
     margin: 3rem;
     border: 2px solid blue;
     border-radius: 8px;
-    width: 65%;
+    width: 75%;
 }
 
 .txtName {
@@ -124,9 +129,13 @@ footer {
     padding: 1rem;
 }
 
-@media (max-width: 400px) {}
+/* @media (max-width: 400px) {
+    .txtDiv {
+        width: 65%
+    }
+} */
 
-@media (min-width: 375px) {
+@media (max-width: 375px) {
     .txtDiv {
         width: 97%;
         margin: 0;

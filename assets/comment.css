@@ -1,3 +1,12 @@
+.divTxtTxt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: evenly;
+    width: 75%;
+    margin-top: 4rem;
+}
+
 .txtDiv {
     display: flex;
     flex-direction: column;
@@ -7,6 +16,7 @@
     margin-bottom: 3rem;
     border: 2px solid blue;
     border-radius: 8px;
+    width: 85%;
 }
 
 @media (min-width: 375px) {
@@ -15,6 +25,8 @@
         margin: 0.5rem;
     }
 }
+
+
 
 .txtName {
     font-size: 1.5rem;

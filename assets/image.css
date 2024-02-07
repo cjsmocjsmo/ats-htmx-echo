@@ -28,3 +28,9 @@
     border-radius: 8px;
     margin: 1em;
 }
+
+.text-column {
+    display: block;
+    margin-top: 4rem;
+    width: 95%;
+}
