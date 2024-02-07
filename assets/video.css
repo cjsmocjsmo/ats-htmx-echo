@@ -1,0 +1,57 @@
+.vidDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.imgDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.land {
+    width: 300px;
+    height: 169px;
+    border-radius: 8px;
+    margin: 1em;
+}
+
+.shortsDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.shorts {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.youtubeh1 {
+    margin: 2.25rem;
+}
+
+.youtubelink {
+    font-size: 2.25rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: red;
+}
+
+.atslink {
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    color: blue;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5em;
+}

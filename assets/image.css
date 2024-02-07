@@ -1,0 +1,30 @@
+.portDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 2.5em;
+}
+
+.port {
+    width: 280px;
+    height: auto;
+    border-radius: 8px;
+    margin: 1em;
+}
+
+.landDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.land {
+    width: 280px;
+    height: auto;
+    border-radius: 8px;
+    margin: 1em;
+}

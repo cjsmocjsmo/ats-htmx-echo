@@ -7,529 +7,353 @@
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content="Alpha Tree Service Video page.">
     <title>Videos</title>
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="/assets/video.css">
+    <script src="/assets/htmx.min.js"></script>
 </head>
-
-<!-- <script src="https://unpkg.com/htmx.org@1.9.10"
-    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
-    crossorigin="anonymous"></script> -->
-
-<script src="/assets/htmx.min.js"></script>
-
-<style>
-    :root {
-        --font-body: Arial, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-            Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        --font-mono: 'Fira Mono', monospace;
-        --color-bg-0: rgb(65, 12, 100);
-        /* --color-bg-1: hsl(208, 78%, 19%); */
-        --color-bg-1: black;
-        --color-bg-2: hsl(278, 79%, 50%);
-        --color-theme-1: #ff3e00;
-        --color-theme-2: #4075a6;
-        --color-text: rgba(0, 0, 0, 0.7);
-        --column-width: 42rem;
-        --column-margin-top: 4rem;
-        font-family: var(--font-body);
-        color: var(--color-text);
-        --accent: 136, 58, 234;
-        --accent-light: 224, 204, 250;
-        --accent-dark: 49, 10, 101;
-        --accent-gradient: linear-gradient(45deg,
-                rgb(var(--accent)),
-                rgb(var(--accent-light)) 30%,
-                white 60%);
-    }
-
-    body {
-        min-height: 100vh;
-        margin: 0;
-        background-attachment: fixed;
-        background-color: var(--color-bg-1);
-        background-size: 100vw 100vh;
-    }
-
-    main {
-        margin: auto;
-        padding: 1rem;
-        width: 800px;
-        max-width: calc(100% - 2rem);
-        min-height: 100vh;
-        color: white;
-        font-size: 20px;
-        line-height: 1.6;
-    }
-
-    .vidDiv {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-
-    .imgDiv {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .land {
-        width: 300px;
-        height: 169px;
-        border-radius: 8px;
-        margin: 1em;
-    }
-
-    .shortsDiv {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-
-    .shorts {
-        width: 200px;
-        height: auto;
-        border-radius: 8px;
-    }
-
-    .youtubeh1 {
-        margin: 2.25rem;
-    }
-
-    .youtubelink {
-        font-size: 2.25rem;
-        font-weight: bold;
-        text-decoration: none;
-        color: red;
-    }
-
-    .atslink {
-        text-decoration: none;
-        font-size: 1em;
-        font-weight: bold;
-        color: blue;
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 1.5em;
-    }
-
-    .container {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        margin-top: 1rem;
-    }
-
-    .container a {
-        text-decoration: none;
-        color: purple;
-    }
-
-    .container a:hover {
-        color: #ec4e27;
-    }
-
-    .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-        /* If you want dots under the hoverable text */
-    }
-
-    /* Tooltip text */
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: blue;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-        position: absolute;
-        z-index: 1;
-        top: -5px;
-        left: 105%;
-
-    }
-
-    /* Show the tooltip text when you mouse over the tooltip container */
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-    }
-
-    .instA {
-        text-decoration: none;
-        width: 75%;
-    }
-
-    .instructions {
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        border: 1px solid rgba(var(--accent-light), 25%);
-        border-radius: 8px;
-        background: linear-gradient(rgba(var(--accent-dark), 66%),
-                rgba(var(--accent-dark), 33%));
-        font-size: 3rem;
-        font-weight: 700;
-        line-height: 1;
-        color: antiquewhite;
-        text-align: center;
-    }
-
-    a:hover {
-        color: green;
-    }
-
-    .instructions:hover {
-        border-color: green;
-        color: green;
-    }
-</style>
-
 
 <body>
     <main>
-        <div class="container">
-            <div class="tooltip">
-                <span class="tooltiptext">Home</span>
+        <div class="mainDiv">
+            <div class="container">
+                <div class="tooltip">
+                    <span class="tooltiptext">Home</span>
 
-                <a href="/">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                        class="bi bi-house-door-fill" viewBox="0 0 16 16">
-                        <path
-                            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5">
-                        </path>
-                    </svg>
-                </a>
+                    <a href="/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                            class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+                <div class="tooltip">
+                    <span class="tooltiptext">Videos</span>
+                    <a href="/videos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                            class="bi bi-camera-reels-fill" viewBox="0 0 16 16">
+                            <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+                            <path d="M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
+                            <path
+                                d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+                <div class="tooltip">
+                    <span class="tooltiptext">Images</span>
+                    <a href="/images">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                            class="bi bi-images" viewBox="0 0 16 16">
+                            <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"></path>
+                            <path
+                                d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <div class="tooltip">
-                <span class="tooltiptext">Videos</span>
-                <a href="/videos">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                        class="bi bi-camera-reels-fill" viewBox="0 0 16 16">
-                        <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
-                        <path d="M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6"></path>
-                        <path
-                            d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z">
-                        </path>
-                    </svg>
-                </a>
+            <a class="instA" href="tel:3605168933">
+                <h1 class="instructions">360 516 8933</h1>
+            </a>
+            <div class="text-column">
+
+
+                <div class="vidDiv">
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=MqwMnRDq5Rg" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/cottonwood-day-3_thumb.webp"
+                                alt="test1" /></a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=MqwMnRDq5Rg" target="_blank">
+                            <p>Cottonwood day 3</p>
+                        </a>
+                    </div>
+
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=XsPilBsVEcY" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/cottonwoodremovalday2_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=XsPilBsVEcY" target="_blank">
+                            <p>Cottonwood day 2</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=3kY78d8AczE" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/cottonwoodremovalday1_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=3kY78d8AczE" target="_blank">
+                            <p>Cottonwood Removal Day 1</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <img class="land" src="https://atsdo.xyz/images/video_webp/Douglas-Fir-Removal_thumb.webp"
+                            alt="test2" />
+                        <p>Douglas Fir Removal</p>
+                    </div>
+
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=D-fbOKDuK3c" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/september-22-2023_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=D-fbOKDuK3c" target="_blank">
+                            <p>September 22, 2023</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=jiOO2a3ybA4" target="_blank">
+                            <img class="land"
+                                src="https://atsdo.xyz/images/video_webp/back-yar-dead-pine-tree_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=jiOO2a3ybA4" target="_blank">
+                            <p>Back yard dead pine tree</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=nUWrX7pqg68" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/multi-stem-cedar-tree_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=nUWrX7pqg68" target="_blank">
+                            <p>Multi stem cedar tree</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=Kr-6KdrMVPk" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/uprootedalder_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=Kr-6KdrMVPk" target="_blank">
+                            <p>Up rooted Adler</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=JmVcGGM9_Nc" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/april-27-2023_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=JmVcGGM9_Nc" target="_blank">
+                            <p>April 27, 2023</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=62uaiG4qWV8" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/january-24-2023_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=62uaiG4qWV8" target="_blank">
+                            <p>January 24, 2023</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=M4ZGLJk7Cjw" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/dyingwhitepineremoval_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=M4ZGLJk7Cjw" target="_blank">
+                            <p>Dying white pine removal</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=5XRaC8RSXbM" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/douglas-fir-removal_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=5XRaC8RSXbM" target="_blank">
+                            <p>Douglas fir removal</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=IZQymhYK59k" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/snow-bound-hemlock_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=IZQymhYK59k" target="_blank">
+                            <p>Snow bound Hemlock</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=PHDLlOBqkjw" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/make-it-snow_test_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=PHDLlOBqkjw" target="_blank">
+                            <p>Make it snow</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=mfWPIOh30nI" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/we-cut-trees-part1_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=mfWPIOh30nI" target="_blank">
+                            <p>We Cut Tree's Part1</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=CVi0d1aepbE" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/big-cedar-removal_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=CVi0d1aepbE" target="_blank">
+                            <p>Big cedar removal</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=MAhLq6x6jOM" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/tight-spaces_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=MAhLq6x6jOM" target="_blank">
+                            <p>Tight Spaces</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=9rvT2BEYbf8" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/win-damaged-cedar_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=9rvT2BEYbf8" target="_blank">
+                            <p>Win Damaged Cedar</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=wI5ZR78-aKM" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/just-getting-started_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=wI5ZR78-aKM" target="_blank">
+                            <p>Just getting started</p>
+                        </a>
+                    </div>
+                    <div class="imgDiv">
+                        <a class="atslink" href="https://www.youtube.com/watch?v=okVkEfmoTTA" target="_blank">
+                            <img class="land" src="https://atsdo.xyz/images/video_webp/big-tree-top-removal_thumb.webp"
+                                alt="test2" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/watch?v=okVkEfmoTTA" target="_blank">
+                            <p>Big tree top removal</p>
+                        </a>
+                    </div>
+                </div>
+
+                <h1 class="youtubeh1">
+                    <a class="youtubelink" href="https://www.youtube.com/@wecuttrees3173/featured"
+                        target="_blank">Subscribe
+                        to our YouTube Channel</a>
+                </h1>
+
+                <div class="vidDiv">
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/IlAXyoT0_uI" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/august132022_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/IlAXyoT0_uI" target="_blank">
+                            <p>August 13 2022</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/ldUF1uSs-C0" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/december132023_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/ldUF1uSs-C0" target="_blank">
+                            <p>December 13 2023</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/OY-DRbJj7z4" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/easterpin_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/OY-DRbJj7z4" target="_blank">
+                            <p>Easter</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/IIN1L7m1BZc" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/july272022_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/IIN1L7m1BZc" target="_blank">
+                            <p>July 27 2022</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/nAwZmu_PVGs" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/july82022_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/nAwZmu_PVGs" target="_blank">
+                            <p>July 8 2022</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/9Mq-YzLSq-o" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/june12023_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/9Mq-YzLSq-o" target="_blank">
+                            <p>June 1 2023</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/EzS2gjWNGJ0" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/logdrop_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/EzS2gjWNGJ0" target="_blank">
+                            <p>Log Drop</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/xFuLlo0rk10" target="_blank">
+                            <img class="shorts"
+                                src="https://atsdo.xyz/images/shorts_webp/nocleanupjobonehemlocktreeinbackyard_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/xFuLlo0rk10" target="_blank">
+                            <p>No Cleanup Job</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a class="atslink" href="https://www.youtube.com/shorts/jmvoBIxo-v4" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/september222023_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/jmvoBIxo-v4" target="_blank">
+                            <p>September 22 2023</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a href="https://www.youtube.com/shorts/adLBtc5uBwM" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/smallrigout_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/adLBtc5uBwM" target="_blank">
+                            <p>Small Rig Out</p>
+                        </a>
+                    </div>
+                    <div class="shortsDiv">
+                        <a href="https://www.youtube.com/shorts/jEWxCjmNvUU" target="_blank">
+                            <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/topout_thumb.webp"
+                                alt="test3" />
+                        </a>
+                        <a class="atslink" href="https://www.youtube.com/shorts/jEWxCjmNvUU" target="_blank">
+                            <p>Top Out</p>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="tooltip">
-                <span class="tooltiptext">Images</span>
-                <a href="/images">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                        class="bi bi-images" viewBox="0 0 16 16">
-                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"></path>
-                        <path
-                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z">
-                        </path>
-                    </svg>
-                </a>
-            </div>
+            <a class="instA" href="tel:3605168933">
+                <h1 class="instructions">360 516 8933</h1>
+            </a>
         </div>
-        <a class="instA" href="tel:3605168933">
-            <h1 class="instructions">360 516 8933</h1>
-        </a>
-        <div class="text-column">
-
-
-            <div class="vidDiv">
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=MqwMnRDq5Rg" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/cottonwood-day-3_thumb.webp"
-                            alt="test1" /></a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=MqwMnRDq5Rg" target="_blank">
-                        <p>Cottonwood day 3</p>
-                    </a>
-                </div>
-
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=XsPilBsVEcY" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/cottonwoodremovalday2_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=XsPilBsVEcY" target="_blank">
-                        <p>Cottonwood day 2</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=3kY78d8AczE" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/cottonwoodremovalday1_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=3kY78d8AczE" target="_blank">
-                        <p>Cottonwood Removal Day 1</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <img class="land" src="https://atsdo.xyz/images/video_webp/Douglas-Fir-Removal_thumb.webp"
-                        alt="test2" />
-                    <p>Douglas Fir Removal</p>
-                </div>
-
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=D-fbOKDuK3c" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/september-22-2023_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=D-fbOKDuK3c" target="_blank">
-                        <p>September 22, 2023</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=jiOO2a3ybA4" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/back-yar-dead-pine-tree_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=jiOO2a3ybA4" target="_blank">
-                        <p>Back yard dead pine tree</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=nUWrX7pqg68" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/multi-stem-cedar-tree_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=nUWrX7pqg68" target="_blank">
-                        <p>Multi stem cedar tree</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=Kr-6KdrMVPk" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/uprootedalder_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=Kr-6KdrMVPk" target="_blank">
-                        <p>Up rooted Adler</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=JmVcGGM9_Nc" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/april-27-2023_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=JmVcGGM9_Nc" target="_blank">
-                        <p>April 27, 2023</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=62uaiG4qWV8" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/january-24-2023_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=62uaiG4qWV8" target="_blank">
-                        <p>January 24, 2023</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=M4ZGLJk7Cjw" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/dyingwhitepineremoval_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=M4ZGLJk7Cjw" target="_blank">
-                        <p>Dying white pine removal</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=5XRaC8RSXbM" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/douglas-fir-removal_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=5XRaC8RSXbM" target="_blank">
-                        <p>Douglas fir removal</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=IZQymhYK59k" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/snow-bound-hemlock_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=IZQymhYK59k" target="_blank">
-                        <p>Snow bound Hemlock</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=PHDLlOBqkjw" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/make-it-snow_test_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=PHDLlOBqkjw" target="_blank">
-                        <p>Make it snow</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=mfWPIOh30nI" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/we-cut-trees-part1_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=mfWPIOh30nI" target="_blank">
-                        <p>We Cut Tree's Part1</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=CVi0d1aepbE" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/big-cedar-removal_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=CVi0d1aepbE" target="_blank">
-                        <p>Big cedar removal</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=MAhLq6x6jOM" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/tight-spaces_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=MAhLq6x6jOM" target="_blank">
-                        <p>Tight Spaces</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=9rvT2BEYbf8" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/win-damaged-cedar_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=9rvT2BEYbf8" target="_blank">
-                        <p>Win Damaged Cedar</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=wI5ZR78-aKM" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/just-getting-started_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=wI5ZR78-aKM" target="_blank">
-                        <p>Just getting started</p>
-                    </a>
-                </div>
-                <div class="imgDiv">
-                    <a class="atslink" href="https://www.youtube.com/watch?v=okVkEfmoTTA" target="_blank">
-                        <img class="land" src="https://atsdo.xyz/images/video_webp/big-tree-top-removal_thumb.webp"
-                            alt="test2" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/watch?v=okVkEfmoTTA" target="_blank">
-                        <p>Big tree top removal</p>
-                    </a>
-                </div>
-            </div>
-
-            <h1 class="youtubeh1">
-                <a class="youtubelink" href="https://www.youtube.com/@wecuttrees3173/featured" target="_blank">Subscribe
-                    to our YouTube Channel</a>
-            </h1>
-
-            <div class="vidDiv">
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/IlAXyoT0_uI" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/august132022_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/IlAXyoT0_uI" target="_blank">
-                        <p>August 13 2022</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/ldUF1uSs-C0" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/december132023_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/ldUF1uSs-C0" target="_blank">
-                        <p>December 13 2023</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/OY-DRbJj7z4" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/easterpin_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/OY-DRbJj7z4" target="_blank">
-                        <p>Easter</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/IIN1L7m1BZc" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/july272022_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/IIN1L7m1BZc" target="_blank">
-                        <p>July 27 2022</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/nAwZmu_PVGs" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/july82022_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/nAwZmu_PVGs" target="_blank">
-                        <p>July 8 2022</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/9Mq-YzLSq-o" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/june12023_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/9Mq-YzLSq-o" target="_blank">
-                        <p>June 1 2023</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/EzS2gjWNGJ0" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/logdrop_thumb.webp" alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/EzS2gjWNGJ0" target="_blank">
-                        <p>Log Drop</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/xFuLlo0rk10" target="_blank">
-                        <img class="shorts"
-                            src="https://atsdo.xyz/images/shorts_webp/nocleanupjobonehemlocktreeinbackyard_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/xFuLlo0rk10" target="_blank">
-                        <p>No Cleanup Job</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a class="atslink" href="https://www.youtube.com/shorts/jmvoBIxo-v4" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/september222023_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/jmvoBIxo-v4" target="_blank">
-                        <p>September 22 2023</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a href="https://www.youtube.com/shorts/adLBtc5uBwM" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/smallrigout_thumb.webp"
-                            alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/adLBtc5uBwM" target="_blank">
-                        <p>Small Rig Out</p>
-                    </a>
-                </div>
-                <div class="shortsDiv">
-                    <a href="https://www.youtube.com/shorts/jEWxCjmNvUU" target="_blank">
-                        <img class="shorts" src="https://atsdo.xyz/images/shorts_webp/topout_thumb.webp" alt="test3" />
-                    </a>
-                    <a class="atslink" href="https://www.youtube.com/shorts/jEWxCjmNvUU" target="_blank">
-                        <p>Top Out</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <a class="instA" href="tel:3605168933">
-            <h1 class="instructions">360 516 8933</h1>
-        </a>
     </main>
 </body>
 

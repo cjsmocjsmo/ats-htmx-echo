@@ -1,0 +1,138 @@
+.txtDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    border: 2px solid blue;
+    border-radius: 8px;
+}
+
+@media (min-width: 375px) {
+    .txtDiv {
+
+        margin: 0.5rem;
+    }
+}
+
+.txtName {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: antiquewhite;
+}
+
+.txtDate {
+    font-size: 1rem;
+    font-weight: 700;
+    color: antiquewhite;
+}
+
+.txttxt {
+    font-size: 1.25rem;
+    color: antiquewhite;
+    margin: 1rem;
+}
+
+@media (max-width: 400px) {
+    .txttxt {
+        font-size: 1rem;
+    }
+}
+
+p {
+    font-size: 1.25rem;
+    color: antiquewhite;
+    margin: 1rem;
+}
+
+a {
+    color: blue;
+    /* text-decoration: none; */
+}
+
+.formDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.leaveCom {
+    text-align: center;
+    font-size: 1.75rem;
+    margin-top: 2rem;
+    color: purple;
+}
+
+h1 {
+    text-align: center;
+}
+
+.submitBtn {
+    box-shadow: 0 4px 6px 0 rgba(160, 83, 63, 0.1);
+    background-color: purple;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 1rem 2.5rem 1rem 2.5rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    border: 2px solid rgb(59, 224, 17);
+
+}
+
+.submitBtn:hover {
+    background-color: green;
+}
+
+.submitBtn:focus {
+    box-shadow: 0 0 0 4px rgba(160, 83, 63, 0.4);
+}
+
+.name-lable-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem 0, 1rem 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    float: right;
+    margin-bottom: 1rem;
+    padding: 10px;
+    color: antiquewhite
+}
+
+.nameInput,
+.emailInput,
+.ratingsInput,
+.filepickerInput {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 2px solid purple;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: grey;
+    font-size: large;
+
+}
+
+textarea {
+    width: 100%;
+    padding: 22px 50px;
+    margin: 8px 0;
+    display: block;
+    border: 2px solid purple;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: grey;
+    font-size: large;
+}
