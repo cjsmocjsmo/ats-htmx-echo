@@ -27,7 +27,7 @@ type Template struct {
 func init() {
 	godotenv.Load()
 	dbpath := os.Getenv("ATS_DB_PATH")
-	db, err := sql.Open("sqlite3", ats.db)
+	db, err := sql.Open("sqlite3", "ats.db")
 
 	if err != nil {
 		panic(err)
