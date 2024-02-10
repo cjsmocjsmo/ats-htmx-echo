@@ -1,10 +1,18 @@
 package main
 
 import (
+	// "fmt"
 	"html/template"
 	"io"
 	"net/http"
+	// "net/mail"
+	"os"
+	// "regexp"
+	// "strconv"
+	// "unicode"
 
+	// "github.com/google/uuid"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -85,6 +93,37 @@ func ats_port10(c echo.Context) error {
 	return c.Render(http.StatusOK, "ats_port10", "WORKED")
 }
 
+func com_upload(c echo.Context) string {
+	name := c.FormValue("name")
+	email := c.FormValue("email")
+	rating := c.FormValue("rating")
+	comment := c.FormValue("comment")
+	areInputsValid := checkInputs(name, email, rating, comment)
+	if !areInputsValid {
+		return "Invalid input"
+	}
+	
+
+	file, err := c.FormFile("filepicker")
+	if err != nil {
+		println("filepicker error: ")
+	}
+
+	comid := atsUUID()
+
+	outpath, err := save_file(comid, file)
+	if err != nil {
+		println("save_file error: ")
+	}
+
+	return outpath
+}
+
+func init() {
+	godotenv.Load()
+	os.Setenv("ATS_UPLOAD_DIR", "/usr/share/ats-htmx-echo/uploads")
+}
+
 func main() {
 	e := echo.New()
 	e.Use(middleware.CORS())
@@ -111,6 +150,7 @@ func main() {
 	e.GET("/port8", ats_port8)
 	e.GET("/port9", ats_port9)
 	e.GET("/port10", ats_port10)
+	e.POST("/upload", com_upload)
 	e.Static("/assets", "assets")
 	e.Logger.Fatal(e.Start(":8181"))
 }
