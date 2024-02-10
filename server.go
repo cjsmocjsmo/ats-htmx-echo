@@ -35,7 +35,7 @@ func init() {
 	// Create comments table
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS accounts (
-		id TEXT PRIMARY KEY AUTOINCREMENT,
+		id INT PRIMARY KEY AUTOINCREMENT,
 		acctid TEXT NOT NULL UNIQUE,
 		email TEXT NOT NULL UNIQUE,
 		date TEXT NOT NULL
@@ -48,7 +48,7 @@ func init() {
 
 	sqlStmt2 := `
 	CREATE TABLE IF NOT EXISTS comments (
-		id TEXT PRIMARY KEY AUTOINCREMENT,
+		id INT PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		email TEXT NOT NULL,
 		rating TEXT NOT NULL,
@@ -63,7 +63,7 @@ func init() {
 	}
 	sqlStmt3 := `
 	CREATE TABLE IF NOT EXISTS estimates (
-		id TEXT PRIMARY KEY AUTOINCREMENT,
+		id INT PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		address TEXT NOT NULL,
 		city TEXT NOT NULL,
