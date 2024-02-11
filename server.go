@@ -24,6 +24,7 @@ type Template struct {
 	templates *template.Template
 }
 
+
 func init() {
 	godotenv.Load()
 	dbpath := os.Getenv("ATS_DB_PATH")
@@ -50,6 +51,7 @@ func init() {
 	sqlStmt2 := `
 	CREATE TABLE IF NOT EXISTS comments (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		acctid TEXT NOT NULL,
 		name TEXT NOT NULL,
 		email TEXT NOT NULL,
 		rating TEXT NOT NULL,
@@ -65,6 +67,8 @@ func init() {
 	sqlStmt3 := `
 	CREATE TABLE IF NOT EXISTS estimates (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		acctid TEXT NOT NULL,
+		estid TEXT NOT NULL,
 		name TEXT NOT NULL,
 		address TEXT NOT NULL,
 		city TEXT NOT NULL,
@@ -195,6 +199,14 @@ func com_upload(c echo.Context) error {
 		return c.Render(http.StatusOK, "ats_rejected", "WORKED")
 	}
 
+	hasAccount := accountCheck(email)
+	var acctid string
+	if !hasAccount {
+		acctid = createAccount(email)
+	} else {
+		acctid = acountInfoByEmail(email)
+	}
+
 	file, err := c.FormFile("filepicker")
 	if err != nil {
 		println("filepicker error: ")
@@ -217,13 +229,13 @@ func com_upload(c echo.Context) error {
 	}
 	defer db.Close()
 
-	stmt, err := db.Prepare("INSERT INTO comments (comid, name, email, rating, comment, date, media) VALUES (?, ?, ?, ?, ?, datetime('now'), ?)")
+	stmt, err := db.Prepare("INSERT INTO comments (acctid, comid, name, email, rating, comment, date, media) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), ?)")
 	if err != nil {
 		panic(err)
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(comid, name, email, rating, comment, today, media)
+	_, err = stmt.Exec(acctid, comid, name, email, rating, comment, today, media)
 	if err != nil {
 		panic(err)
 	}
@@ -333,6 +345,59 @@ func accountCheck(email string) bool {
 	return false
 }
 
+type AccountInfo struct {
+	Acctid string
+	Email  string
+	Date   string
+}
+
+func acountInfoByEmail(email string) string {
+	dbPath := os.Getenv("ATS_DB_PATH")
+	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("SELECT * FROM accounts WHERE email = ?", email)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	//place the values into AccountInfo and return it
+	var ai AccountInfo
+	for rows.Next() {
+		
+		err = rows.Scan(&ai.Acctid, &ai.Email, &ai.Date)
+		if err != nil {
+			panic(err)
+		}
+		
+	}
+	return ai.Acctid
+}
+
+// func accountInfoByID(acctid string) AccountInfo {
+// 	dbPath := os.Getenv("ATS_DB_PATH")
+// 	db, err := sql.Open("sqlite3", dbPath)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer db.Close()
+// 	rows, err := db.Query("SELECT * FROM accounts WHERE acctid = ?", acctid)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer rows.Close()
+// 	var ai AccountInfo
+// 	for rows.Next() {
+// 		err = rows.Scan(&ai.Acctid, &ai.Email, &ai.Date)
+// 		if err != nil {
+// 			panic(err)
+// 		}
+// 	}
+// 	return ai
+// }
+
 func createAccount(email string) string {
 	acctid := atsUUID()
 	date := todaysDate()
@@ -352,33 +417,19 @@ func createAccount(email string) string {
 func badwords() []string {
 	var badwords []string
 	badwords = append(badwords, "abbo",
-		"abo",
-		"abortion",
-		"abuse",
-		"addict",
-		"addicts",
-		"adult",
-		"africa",
-		"african",
 		"alla",
 		"allah",
 		"alligatorbait",
-		"amateur",
-		"american",
 		"anal",
 		"analannie",
 		"analsex",
-		"angie",
 		"angry",
 		"anus",
-		"arab",
-		"arabs",
 		"areola",
 		"argie",
 		"aroused",
 		"arse",
 		"arsehole",
-		"asian",
 		"ass",
 		"assassin",
 		"assassinate",
@@ -412,11 +463,7 @@ func badwords() []string {
 		"assranger",
 		"asswhore",
 		"asswipe",
-		"athletesfoot",
 		"attack",
-		"australian",
-		"babe",
-		"babies",
 		"backdoor",
 		"backdoorman",
 		"backseat",
@@ -425,17 +472,11 @@ func badwords() []string {
 		"balls",
 		"ballsack",
 		"banging",
-		"baptist",
 		"barelylegal",
-		"barf",
-		"barface",
-		"barfface",
-		"bast",
 		"bastard ",
 		"bazongas",
 		"bazooms",
 		"beaner",
-		"beast",
 		"beastality",
 		"beastial",
 		"beastiality",
@@ -447,12 +488,10 @@ func badwords() []string {
 		"bestiality",
 		"bi",
 		"biatch",
-		"bible",
 		"bicurious",
 		"bigass",
 		"bigbastard",
 		"bigbutt",
-		"bigger",
 		"bisexual",
 		"bi-sexual",
 		"bitch",
@@ -464,11 +503,9 @@ func badwords() []string {
 		"bitchslap",
 		"bitchy",
 		"biteme",
-		"black",
 		"blackman",
 		"blackout",
 		"blacks",
-		"blind",
 		"blow",
 		"blowjob",
 		"boang",
@@ -483,7 +520,6 @@ func badwords() []string {
 		"bomd",
 		"bondage",
 		"boner",
-		"bong",
 		"boob",
 		"boobies",
 		"boobs",
@@ -503,9 +539,6 @@ func badwords() []string {
 		"breastlover",
 		"breastman",
 		"brothel",
-		"bugger",
-		"buggered",
-		"buggery",
 		"bullcrap",
 		"bulldike",
 		"bulldyke",
@@ -514,8 +547,6 @@ func badwords() []string {
 		"bumfuck",
 		"bunga",
 		"bunghole",
-		"buried",
-		"burn",
 		"butchbabes",
 		"butchdike",
 		"butchdyke",
@@ -537,39 +568,19 @@ func badwords() []string {
 		"buttplug",
 		"buttstain",
 		"byatch",
-		"cacker",
 		"cameljockey",
 		"cameltoe",
-		"canadian",
-		"cancer",
 		"carpetmuncher",
-		"carruth",
-		"catholic",
-		"catholics",
-		"cemetery",
 		"chav",
 		"cherrypopper",
 		"chickslick",
-		"children's",
-		"chin",
-		"chinaman",
-		"chinamen",
-		"chinese",
 		"chink",
 		"chinky",
-		"choad",
-		"chode",
-		"christ",
-		"christian",
-		"church",
-		"cigarette",
-		"cigs",
 		"clamdigger",
 		"clamdiver",
 		"clit",
 		"clitoris",
 		"clogwog",
-		"cocaine",
 		"cock",
 		"cockblock",
 		"cockblocker",
@@ -595,13 +606,9 @@ func badwords() []string {
 		"cocky",
 		"cohee",
 		"coitus",
-		"color",
-		"colored",
-		"coloured",
 		"commie",
 		"communist",
 		"condom",
-		"conservative",
 		"conspiracy",
 		"coolie",
 		"cooly",
@@ -609,8 +616,6 @@ func badwords() []string {
 		"coondog",
 		"copulate",
 		"cornhole",
-		"corruption",
-		"cra5h",
 		"crabs",
 		"crack",
 		"crackpipe",
@@ -619,13 +624,6 @@ func badwords() []string {
 		"crap",
 		"crapola",
 		"crapper",
-		"crappy",
-		"crash",
-		"creamy",
-		"crime",
-		"crimes",
-		"criminal",
-		"criminals",
 		"crotch",
 		"crotchjockey",
 		"crotchmonkey",
@@ -654,8 +652,6 @@ func badwords() []string {
 		"cuntlicking ",
 		"cuntsucker",
 		"cybersex",
-		"cyberslimer",
-		"dago",
 		"dahmer",
 		"dammit",
 		"damn",
@@ -666,14 +662,9 @@ func badwords() []string {
 		"datnigga",
 		"dead",
 		"deapthroat",
-		"death",
 		"deepthroat",
 		"defecate",
-		"dego",
 		"demon",
-		"deposit",
-		"desire",
-		"destroy",
 		"deth",
 		"devil",
 		"devilworshippe",
@@ -688,20 +679,11 @@ func badwords() []string {
 		"dickwad",
 		"dickweed",
 		"diddle",
-		"die",
-		"died",
-		"dies",
 		"dike",
 		"dildo",
 		"dingleberry",
-		"dink",
 		"dipshit",
 		"dipstick",
-		"dirty",
-		"disease",
-		"diseases",
-		"disturbed",
-		"dive",
 		"dix",
 		"dixiedike",
 		"dixiedyke",
@@ -711,42 +693,25 @@ func badwords() []string {
 		"doodoo",
 		"doo-doo",
 		"doom",
-		"dope",
 		"dragqueen",
 		"dragqween",
 		"dripdick",
-		"drug",
-		"drunk",
-		"drunken",
-		"dumb",
 		"dumbass",
 		"dumbbitch",
 		"dumbfuck",
-		"dyefly",
 		"dyke",
 		"easyslut",
 		"eatballs",
 		"eatme",
 		"eatpussy",
-		"ecstacy",
 		"ejaculate",
 		"ejaculated",
 		"ejaculating ",
 		"ejaculation",
 		"enema",
 		"enemy",
-		"erect",
 		"erection",
-		"ero",
-		"escort",
-		"ethiopian",
-		"ethnic",
-		"european",
-		"evl",
 		"excrement",
-		"execute",
-		"executed",
-		"execution",
 		"executioner",
 		"explosion",
 		"facefucker",
@@ -755,11 +720,6 @@ func badwords() []string {
 		"fagging",
 		"faggot",
 		"fagot",
-		"failed",
-		"failure",
-		"fairies",
-		"fairy",
-		"faith",
 		"fannyfucker",
 		"fart",
 		"farted ",
@@ -773,7 +733,6 @@ func badwords() []string {
 		"fatfucker",
 		"fatso",
 		"fckcum",
-		"fear",
 		"feces",
 		"felatio ",
 		"felch",
@@ -784,17 +743,12 @@ func badwords() []string {
 		"feltcher",
 		"feltching",
 		"fetish",
-		"fight",
-		"filipina",
-		"filipino",
 		"fingerfood",
 		"fingerfuck ",
 		"fingerfucked ",
 		"fingerfucker ",
 		"fingerfuckers",
 		"fingerfucking ",
-		"fire",
-		"firing",
 		"fister",
 		"fistfuck",
 		"fistfucked ",
@@ -804,28 +758,20 @@ func badwords() []string {
 		"flange",
 		"flasher",
 		"flatulence",
-		"floo",
-		"flydie",
-		"flydye",
-		"fok",
 		"fondle",
 		"footaction",
 		"footfuck",
 		"footfucker",
 		"footlicker",
 		"footstar",
-		"fore",
 		"foreskin",
 		"forni",
 		"fornicate",
 		"foursome",
 		"fourtwenty",
-		"fraud",
 		"freakfuck",
 		"freakyfucker",
 		"freefuck",
-		"fu",
-		"fubar",
 		"fuc",
 		"fucck",
 		"fuck",
@@ -864,9 +810,7 @@ func badwords() []string {
 		"fugly",
 		"fuk",
 		"fuks",
-		"funeral",
 		"funfuck",
-		"fungus",
 		"fuuck",
 		"gangbang",
 		"gangbanged ",
@@ -876,13 +820,9 @@ func badwords() []string {
 		"gay",
 		"gaymuthafuckin",
 		"gaysex ",
-		"geez",
-		"geezer",
-		"geni",
 		"genital",
 		"german",
 		"getiton",
-		"gin",
 		"ginzo",
 		"gipp",
 		"girls",
@@ -903,15 +843,9 @@ func badwords() []string {
 		"gonzagas",
 		"gook",
 		"gotohell",
-		"goy",
-		"goyim",
 		"greaseball",
 		"gringo",
-		"groe",
-		"gross",
 		"grostulation",
-		"gubba",
-		"gummer",
 		"gun",
 		"gyp",
 		"gypo",
@@ -933,12 +867,10 @@ func badwords() []string {
 		"henhouse",
 		"heroin",
 		"herpes",
-		"heterosexual",
 		"hijack",
 		"hijacker",
 		"hijacking",
 		"hillbillies",
-		"hindoo",
 		"hiscock",
 		"hitler",
 		"hitlerism",
@@ -950,7 +882,6 @@ func badwords() []string {
 		"hoes",
 		"hole",
 		"holestuffer",
-		"homicide",
 		"homo",
 		"homobangers",
 		"homosexual",
@@ -977,7 +908,6 @@ func badwords() []string {
 		"hotpussy",
 		"hottotrot",
 		"hummer",
-		"husky",
 		"hussy",
 		"hustler",
 		"hymen",
@@ -985,17 +915,12 @@ func badwords() []string {
 		"iblowu",
 		"idiot",
 		"ikey",
-		"illegal",
 		"incest",
 		"insest",
 		"intercourse",
 		"interracial",
 		"intheass",
 		"inthebuff",
-		"israel",
-		"israeli",
-		"israel's",
-		"italiano",
 		"itch",
 		"jackass",
 		"jackoff",
@@ -1003,15 +928,12 @@ func badwords() []string {
 		"jacktheripper",
 		"jade",
 		"jap",
-		"japanese",
 		"japcrap",
 		"jebus",
 		"jeez",
 		"jerkoff",
 		"jesus",
 		"jesuschrist",
-		"jew",
-		"jewish",
 		"jiga",
 		"jigaboo",
 		"jigg",
@@ -1030,7 +952,6 @@ func badwords() []string {
 		"jizz",
 		"jizzim",
 		"jizzum",
-		"joint",
 		"juggalo",
 		"jugs",
 		"junglebunny",
@@ -1042,11 +963,6 @@ func badwords() []string {
 		"kid",
 		"kigger",
 		"kike",
-		"kill",
-		"killed",
-		"killer",
-		"killing",
-		"kills",
 		"kink",
 		"kinky",
 		"kissass",
@@ -1087,7 +1003,6 @@ func badwords() []string {
 		"lezbo",
 		"lezz",
 		"lezzo",
-		"liberal",
 		"libido",
 		"licker",
 		"lickme",
@@ -1100,9 +1015,6 @@ func badwords() []string {
 		"livesex",
 		"loadedgun",
 		"lolita",
-		"looser",
-		"loser",
-		"lotion",
 		"lovebone",
 		"lovegoo",
 		"lovegun",
@@ -1111,15 +1023,9 @@ func badwords() []string {
 		"lovepistol",
 		"loverocket",
 		"lowlife",
-		"lsd",
 		"lubejob",
 		"lucifer",
 		"luckycammeltoe",
-		"lugan",
-		"lynch",
-		"macaca",
-		"mad",
-		"mafia",
 		"magicwand",
 		"mams",
 		"manhater",
@@ -1135,10 +1041,6 @@ func badwords() []string {
 		"mattressprince",
 		"meatbeatter",
 		"meatrack",
-		"meth",
-		"mexican",
-		"mgger",
-		"mggor",
 		"mickeyfinn",
 		"mideast",
 		"milf",
@@ -1155,7 +1057,6 @@ func badwords() []string {
 		"molestor",
 		"moneyshot",
 		"mooncricket",
-		"mormon",
 		"moron",
 		"moslem",
 		"mosshead",
@@ -1179,15 +1080,7 @@ func badwords() []string {
 		"muffdiver",
 		"muffindiver",
 		"mufflikcer",
-		"mulatto",
-		"muncher",
-		"munt",
-		"murder",
-		"murderer",
-		"muslim",
 		"naked",
-		"narcotic",
-		"nasty",
 		"nastybitch",
 		"nastyho",
 		"nastyslut",
@@ -1256,12 +1149,6 @@ func badwords() []string {
 		"orgasm",
 		"orgies",
 		"orgy",
-		"osama",
-		"paki",
-		"palesimian",
-		"palestinian",
-		"pansies",
-		"pansy",
 		"panti",
 		"panties",
 		"payo",
@@ -1382,8 +1269,6 @@ func badwords() []string {
 		"queer",
 		"quickie",
 		"quim",
-		"ra8s",
-		"rabbi",
 		"racial",
 		"racist",
 		"radical",
@@ -1611,9 +1496,6 @@ func badwords() []string {
 		"tantra",
 		"tarbaby",
 		"tard",
-		"teat",
-		"terror",
-		"terrorist",
 		"teste",
 		"testicle",
 		"testicles",
