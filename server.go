@@ -3,11 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	_ "github.com/mattn/go-sqlite3"
 	"html/template"
 	"io"
 	"mime/multipart"
@@ -24,17 +24,12 @@ type Template struct {
 	templates *template.Template
 }
 
-
-func init() {
-	godotenv.Load()
-	dbpath := os.Getenv("ATS_DB_PATH")
-	db, err := sql.Open("sqlite3", dbpath)
-
+func createAccountsDB(db_path string) {
+	db, err := sql.Open("sqlite3", db_path)
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
-	// Create comments table
 	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS accounts (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,8 +42,15 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+}
 
-	sqlStmt2 := `
+func createCommentsDB(db_path string) {
+	db, err := sql.Open("sqlite3", db_path)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS comments (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		acctid TEXT NOT NULL,
@@ -60,11 +62,19 @@ func init() {
 		media TEXT NOT NULL
 	);
 	`
-	_, err = db.Exec(sqlStmt2)
+	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		panic(err)
 	}
-	sqlStmt3 := `
+}
+
+func createEstimatesDB(db_path string) {
+	db, err := sql.Open("sqlite3", db_path)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	sqlStmt := `
 	CREATE TABLE IF NOT EXISTS estimates (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		acctid TEXT NOT NULL,
@@ -75,15 +85,23 @@ func init() {
 		phone TEXT NOT NULL,
 		email TEXT NOT NULL,
 		servdate TEXT NOT NULL,
+		recdate TEXT NOT NULL,
 		comment TEXT NOT NULL,
 		media TEXT NOT NULL
 	);
 	`
-	_, err = db.Exec(sqlStmt3)
+	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		panic(err)
 	}
+}
 
+func init() {
+	godotenv.Load()
+	dbpath := os.Getenv("ATS_DB_PATH")
+	createAccountsDB(dbpath)
+	createCommentsDB(dbpath)
+	createEstimatesDB(dbpath)
 }
 
 func main() {
@@ -113,6 +131,7 @@ func main() {
 	e.GET("/port9", ats_port9)
 	e.GET("/port10", ats_port10)
 	e.POST("/comupload", com_upload)
+	e.POST("/estupload", est_upload)
 	e.Static("/assets", "assets")
 	e.Logger.Fatal(e.Start(":8181"))
 }
@@ -194,9 +213,9 @@ func com_upload(c echo.Context) error {
 	email := c.FormValue("email")
 	rating := c.FormValue("rating")
 	comment := c.FormValue("comment")
-	areInputsValid := checkInputs(name, email, rating, comment)
+	areInputsValid := checkComInputs(name, email, rating, comment)
 	if !areInputsValid {
-		return c.Render(http.StatusOK, "ats_rejected", "WORKED")
+		return c.Render(http.StatusOK, "ats_comrejected", "WORKED")
 	}
 
 	hasAccount := accountCheck(email)
@@ -292,7 +311,46 @@ func commentCheck(comment string) bool {
 	return false
 }
 
-func checkInputs(name string, email string, rating string, comment string) bool {
+func addressCheck(address string) bool {
+	if len(address) < 1 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func phoneCheck(phone string) bool {
+	//insure phone numer is in the formate 555-555-5555
+	regex := regexp.MustCompile(`\d{3}-\d{3}-\d{4}`)
+	return regex.MatchString(phone)
+}
+
+func servDateCheck(servdate string) bool {
+	//insure servdate is in the formate 12-12-2006
+	regex := regexp.MustCompile(`\d{2}-\d{2}-\d{4}`)
+	return regex.MatchString(servdate)
+}
+
+func checkEstInputs(name string, address string, city string, phone string, email string, servdate string, comment string) bool {
+	isValidName := nameCheck(name)
+	isValidAddress := addressCheck(address)
+	isValidCity := nameCheck(city)
+	isValidPhone := phoneCheck(phone)
+	isValidEmail := emailCheck(email)
+	hasAccount := accountCheck(email)
+	if !hasAccount {
+		createAccount(email)
+	}
+	isValidServDate := servDateCheck(servdate)
+	isValidComment := commentCheck(comment)
+	if isValidName && isValidAddress && isValidCity && isValidPhone && isValidEmail && isValidServDate && isValidComment {
+		return true
+	} else {
+		return false
+	}
+}
+
+func checkComInputs(name string, email string, rating string, comment string) bool {
 	isValidName := nameCheck(name)
 	isValidEmail := emailCheck(email)
 	hasAccount := accountCheck(email)
@@ -327,6 +385,12 @@ func save_file(comid string, file *multipart.FileHeader) (string, error) {
 	return out_path, nil
 }
 
+type AccountInfo struct {
+	Acctid string
+	Email  string
+	Date   string
+}
+
 func accountCheck(email string) bool {
 	dbPath := os.Getenv("ATS_DB_PATH")
 	db, err := sql.Open("sqlite3", dbPath)
@@ -345,12 +409,6 @@ func accountCheck(email string) bool {
 	return false
 }
 
-type AccountInfo struct {
-	Acctid string
-	Email  string
-	Date   string
-}
-
 func acountInfoByEmail(email string) string {
 	dbPath := os.Getenv("ATS_DB_PATH")
 	db, err := sql.Open("sqlite3", dbPath)
@@ -366,12 +424,12 @@ func acountInfoByEmail(email string) string {
 	//place the values into AccountInfo and return it
 	var ai AccountInfo
 	for rows.Next() {
-		
+
 		err = rows.Scan(&ai.Acctid, &ai.Email, &ai.Date)
 		if err != nil {
 			panic(err)
 		}
-		
+
 	}
 	return ai.Acctid
 }
@@ -413,6 +471,57 @@ func createAccount(email string) string {
 	}
 	return acctid
 }
+
+func est_upload(c echo.Context) error {
+	name := c.FormValue("name")
+	address := c.FormValue("address")
+	city := c.FormValue("city")
+	phone := c.FormValue("phone")
+	email := c.FormValue("email")
+	servdate := c.FormValue("servdate")
+	comment := c.FormValue("comment")
+
+	areInputsValid := checkEstInputs(name, address, city, phone, email, servdate, comment)
+	if !areInputsValid {
+		return c.Render(http.StatusOK, "ats_estrejected", "WORKED")
+	}
+
+	hasAccount := accountCheck(email)
+	var acctid string
+	if !hasAccount {
+		acctid = createAccount(email)
+	} else {
+		acctid = acountInfoByEmail(email)
+	}
+
+	file, err := c.FormFile("filepicker")
+	if err != nil {
+		println("filepicker error: ")
+	}
+	estid := atsUUID()
+	media, err := save_file(estid, file)
+	if err != nil {
+		println("save_file error: ")
+	}
+	today := todaysDate()
+	dbPath := os.Getenv("ATS_DB_PATH")
+	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	stmt, err := db.Prepare("INSERT INTO estimates (acctid, estid, name, address, city, phone, email, servdate, recdate, comment, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(acctid, estid, name, address, city, phone, email, servdate, today, comment, media)
+	if err != nil {
+		panic(err)
+	}
+	return c.Render(http.StatusOK, "ats_thanks", "WORKED")
+}
+
 
 func badwords() []string {
 	var badwords []string
