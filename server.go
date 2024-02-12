@@ -1,6 +1,10 @@
 package main
 
 import (
+	// "crypto/tls"
+	// "golang.org/x/crypto/acme"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"golang.org/x/crypto/acme/autocert"
 	"database/sql"
 	"fmt"
 	"github.com/google/uuid"
@@ -59,7 +63,8 @@ func createCommentsDB(db_path string) {
 		rating TEXT NOT NULL,
 		comment TEXT NOT NULL,
 		date TEXT NOT NULL,
-		media TEXT NOT NULL
+		media TEXT NOT NULL,
+		status TEXT NOT NULL
 	);
 	`
 	_, err = db.Exec(sqlStmt)
@@ -87,7 +92,8 @@ func createEstimatesDB(db_path string) {
 		servdate TEXT NOT NULL,
 		recdate TEXT NOT NULL,
 		comment TEXT NOT NULL,
-		media TEXT NOT NULL
+		media TEXT NOT NULL,
+		status TEXT NOT NULL
 	);
 	`
 	_, err = db.Exec(sqlStmt)
@@ -98,16 +104,26 @@ func createEstimatesDB(db_path string) {
 
 func init() {
 	godotenv.Load()
+
 	dbpath := os.Getenv("ATS_DB_PATH")
 	createAccountsDB(dbpath)
 	createCommentsDB(dbpath)
 	createEstimatesDB(dbpath)
+
+	certpath := os.Getenv("ATS_CERT_PATH")
+	err := os.MkdirAll(certpath, 0755)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func main() {
 	e := echo.New()
+	certPath := os.Getenv("ATS_CERT_PATH")
+	e.AutoTLSManager.Cache = autocert.DirCache(certPath)
 	e.Use(middleware.CORS())
 	e.Use(middleware.Gzip())
+	e.Use(middleware.Recover())
 	t := &Template{
 		templates: template.Must(template.ParseGlob("AtsTemplates/*")),
 	}
@@ -133,7 +149,7 @@ func main() {
 	e.POST("/comupload", com_upload)
 	e.POST("/estupload", est_upload)
 	e.Static("/assets", "assets")
-	e.Logger.Fatal(e.Start(":8181"))
+	e.Logger.Fatal(e.StartAutoTLS(":443"))
 }
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -248,16 +264,22 @@ func com_upload(c echo.Context) error {
 	}
 	defer db.Close()
 
-	stmt, err := db.Prepare("INSERT INTO comments (acctid, comid, name, email, rating, comment, date, media) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), ?)")
+	stmt, err := db.Prepare("INSERT INTO comments (acctid, comid, name, email, rating, comment, date, media, status) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), ?, ?)")
 	if err != nil {
 		panic(err)
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(acctid, comid, name, email, rating, comment, today, media)
+	status := "pending"
+
+	_, err = stmt.Exec(acctid, comid, name, email, rating, comment, today, media, status)
 	if err != nil {
 		panic(err)
 	}
+
+	sendComEmail(name, email, rating, comment)
+
+	//need to send notification email to admin
 	return c.Render(http.StatusOK, "ats_thanks", "WORKED")
 }
 
@@ -510,16 +532,92 @@ func est_upload(c echo.Context) error {
 		panic(err)
 	}
 	defer db.Close()
-	stmt, err := db.Prepare("INSERT INTO estimates (acctid, estid, name, address, city, phone, email, servdate, recdate, comment, media) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := db.Prepare("INSERT INTO estimates (acctid, estid, name, address, city, phone, email, servdate, recdate, comment, media, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		panic(err)
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(acctid, estid, name, address, city, phone, email, servdate, today, comment, media)
+	
+	status := "pending"
+
+	_, err = stmt.Exec(acctid, estid, name, address, city, phone, email, servdate, today, comment, media, status)
 	if err != nil {
 		panic(err)
 	}
+
+	sendEstEmail(name, address, city, phone, email, servdate, comment)
+	
+	//need to send notification email to admin
 	return c.Render(http.StatusOK, "ats_thanks", "WORKED")
+}
+
+func sendComEmail(name string, email string, rating string, comment string) {
+	htmlpart1 := "<h3>New Comment</h3><br />Name: " + name
+	htmlpart2 := "<br />Email: " + email
+	htmlpart3 := "<br />Rating: " + rating
+	htmlpart4 := "<br />Comment: " + comment
+	htmlpart5 := htmlpart1 + htmlpart2 + htmlpart3 + htmlpart4
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MAILJET_API_KEY"), os.Getenv("MAILJET_SEC_KEY"))
+	messagesInfo := []mailjet.InfoMessagesV31{
+		{
+			From: &mailjet.RecipientV31{
+				Email: "porthose.cjsmo.cjsmo@gmail.com",
+				Name:  "ATSBOT",
+			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: "porthose.cjsmo.cjsmo@gmail.com",
+					Name:  "PortHose",
+				},
+			},
+			Subject:  "ATSBOT: New Comment",
+			TextPart: "ATSBOT: New Comment",
+			HTMLPart: htmlpart5,
+		},
+	}
+	messages := mailjet.MessagesV31{Info: messagesInfo}
+	res, err := mailjetClient.SendMailV31(&messages)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(res)
+	}
+}
+
+func sendEstEmail(name string, address string, city string, phone string, email string, servdate string, comment string) {
+	htmlpart1 := "<h3>New Estimate</h3><br />Name: " + name
+	htmlpart2 := "<br />Address: " + address
+	htmlpart3 := "<br />City: " + city
+	htmlpart4 := "<br />Phone: " + phone
+	htmlpart5 := "<br />Email: " + email
+	htmlpart6 := "<br />Service Date: " + servdate
+	htmlpart7 := "<br />Comment: " + comment
+	htmlpart8 := htmlpart1 + htmlpart2 + htmlpart3 + htmlpart4 + htmlpart5 + htmlpart6 + htmlpart7
+	mailjetClient := mailjet.NewMailjetClient(os.Getenv("MAILJET_API_KEY"), os.Getenv("MAILJET_SEC_KEY"))
+	messagesInfo := []mailjet.InfoMessagesV31{
+		{
+			From: &mailjet.RecipientV31{
+				Email: "porthose.cjsmo.cjsmo@gmail.com",
+				Name:  "ATSBOT",
+			},
+			To: &mailjet.RecipientsV31{
+				mailjet.RecipientV31{
+					Email: "porthose.cjsmo.cjsmo@gmail.com",
+					Name:  "PortHose",
+				},
+			},
+			Subject:  "ATSBOT: New Estimate",
+			TextPart: "ATSBOT: New Estimate",
+			HTMLPart: htmlpart8,
+		},
+	}
+	messages := mailjet.MessagesV31{Info: messagesInfo}
+	res, err := mailjetClient.SendMailV31(&messages)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(res)
+	}
 }
 
 
