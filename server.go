@@ -106,6 +106,7 @@ func createUploadsDir(uploads_path string) {
 	err := os.MkdirAll(uploads_path, 0755)
 	if err != nil {
 		fmt.Println(err)
+		fmt.Print("unable to create uploads dir")
 	}
 }
 
@@ -113,6 +114,7 @@ func createCertDir(cert_path string) {
 	err := os.MkdirAll(cert_path, 0755)
 	if err != nil {
 		fmt.Println(err)
+		fmt.Print("unable to create cert dir")
 	}
 }
 
@@ -138,6 +140,7 @@ func init() {
 			fmt.Println("file exists")
 		} else {
 			fmt.Println(err3)
+			fmt.Print("unable to create db file")
 		}
             
     }
