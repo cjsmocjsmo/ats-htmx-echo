@@ -102,6 +102,21 @@ func createEstimatesDB(db_path string) {
 	}
 }
 
+func createUploadsDir(uploads_path string) {
+	err := os.MkdirAll(uploads_path, 0755)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func createCertDir(cert_path string) {
+	err := os.MkdirAll(cert_path, 0755)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+
 func init() {
 	godotenv.Load()
 
@@ -110,11 +125,24 @@ func init() {
 	createCommentsDB(dbpath)
 	createEstimatesDB(dbpath)
 
+	uploadsPath := os.Getenv("ATS_UPLOADS_PATH")
+	createUploadsDir(uploadsPath)
+	
 	certpath := os.Getenv("ATS_CERT_PATH")
-	err := os.MkdirAll(certpath, 0755)
-	if err != nil {
-		fmt.Println(err)
-	}
+	createCertDir(certpath)
+
+	filePath := os.Getenv("ATS_DB_PATH")
+    _, err3 := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, 0666)
+    if err3 != nil {
+        if os.IsExist(err3) {
+			fmt.Println("file exists")
+		} else {
+			fmt.Println(err3)
+		}
+            
+    }
+
+
 }
 
 func main() {
