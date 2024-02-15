@@ -176,6 +176,7 @@ func main() {
 	e.GET("/port8", ats_port8)
 	e.GET("/port9", ats_port9)
 	e.GET("/port10", ats_port10)
+	e.GET("/land1", ats_land1)
 	e.POST("/comupload", com_upload)
 	e.POST("/estupload", est_upload)
 	e.Static("/assets", "assets")
@@ -252,6 +253,10 @@ func ats_port9(c echo.Context) error {
 
 func ats_port10(c echo.Context) error {
 	return c.Render(http.StatusOK, "ats_port10", "WORKED")
+}
+
+func ats_land1(c echo.Context) error {
+	return c.Render(http.StatusOK, "ats_land1", "WORKED")
 }
 
 func com_upload(c echo.Context) error {
