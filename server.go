@@ -3,15 +3,16 @@ package main
 import (
 	// "crypto/tls"
 	// "golang.org/x/crypto/acme"
-	"github.com/mailjet/mailjet-apiv3-go/v4"
-	"golang.org/x/crypto/acme/autocert"
 	"database/sql"
+	"flag"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
 	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/acme/autocert"
 	"html/template"
 	"io"
 	"mime/multipart"
@@ -118,7 +119,6 @@ func createCertDir(cert_path string) {
 	}
 }
 
-
 func init() {
 
 	godotenv.Load("atshtmxecho.env")
@@ -130,58 +130,96 @@ func init() {
 
 	uploadsPath := os.Getenv("ATS_UPLOADS_PATH")
 	createUploadsDir(uploadsPath)
-	
+
 	certpath := os.Getenv("ATS_CERT_PATH")
 	createCertDir(certpath)
 
 	filePath := os.Getenv("ATS_DB_PATH")
-    _, err3 := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, 0666)
-    if err3 != nil {
-        if os.IsExist(err3) {
+	_, err3 := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, 0666)
+	if err3 != nil {
+		if os.IsExist(err3) {
 			fmt.Println("file exists")
 		} else {
 			fmt.Println(err3)
 			fmt.Print("unable to create db file")
 		}
-            
-    }
+
+	}
 }
 
 func main() {
-	e := echo.New()
-	certPath := os.Getenv("ATS_CERT_PATH")
-	e.AutoTLSManager.Cache = autocert.DirCache(certPath)
-	e.Use(middleware.CORS())
-	e.Use(middleware.Gzip())
-	e.Use(middleware.Recover())
-	t := &Template{
-		templates: template.Must(template.ParseGlob("AtsTemplates/*")),
-	}
-	e.Renderer = t
+	server_type := flag.String("type", "https", "Type of server to run")
+	flag.Parse()
 
-	e.GET("/", ats_index)
-	e.GET("/about", ats_about)
-	e.GET("/comments", ats_comments)
-	e.GET("/estimates", ats_estimates)
-	e.GET("/images", ats_images)
-	e.GET("/services", ats_services)
-	e.GET("/videos", ats_videos)
-	e.GET("/port1", ats_port1)
-	e.GET("/port2", ats_port2)
-	e.GET("/port3", ats_port3)
-	e.GET("/port4", ats_port4)
-	e.GET("/port5", ats_port5)
-	e.GET("/port6", ats_port6)
-	e.GET("/port7", ats_port7)
-	e.GET("/port8", ats_port8)
-	e.GET("/port9", ats_port9)
-	e.GET("/port10", ats_port10)
-	e.GET("/land1", ats_land1)
-	e.GET("/land2", ats_land2)
-	e.POST("/comupload", com_upload)
-	e.POST("/estupload", est_upload)
-	e.Static("/assets", "assets")
-	e.Logger.Fatal(e.StartAutoTLS(":443"))
+	if *server_type == "https" {
+		e := echo.New()
+		certPath := os.Getenv("ATS_CERT_PATH")
+		e.AutoTLSManager.Cache = autocert.DirCache(certPath)
+		e.Use(middleware.CORS())
+		e.Use(middleware.Gzip())
+		e.Use(middleware.Recover())
+		t := &Template{
+			templates: template.Must(template.ParseGlob("AtsTemplates/*")),
+		}
+		e.Renderer = t
+
+		e.GET("/", ats_index)
+		e.GET("/about", ats_about)
+		e.GET("/comments", ats_comments)
+		e.GET("/estimates", ats_estimates)
+		e.GET("/images", ats_images)
+		e.GET("/services", ats_services)
+		e.GET("/videos", ats_videos)
+		e.GET("/port1", ats_port1)
+		e.GET("/port2", ats_port2)
+		e.GET("/port3", ats_port3)
+		e.GET("/port4", ats_port4)
+		e.GET("/port5", ats_port5)
+		e.GET("/port6", ats_port6)
+		e.GET("/port7", ats_port7)
+		e.GET("/port8", ats_port8)
+		e.GET("/port9", ats_port9)
+		e.GET("/port10", ats_port10)
+		e.GET("/land1", ats_land1)
+		e.GET("/land2", ats_land2)
+		e.POST("/comupload", com_upload)
+		e.POST("/estupload", est_upload)
+		e.Static("/assets", "assets")
+		e.Logger.Fatal(e.StartAutoTLS(":443"))
+	} else {
+		e := echo.New()
+		e.Use(middleware.CORS())
+		e.Use(middleware.Gzip())
+		e.Use(middleware.Recover())
+		t := &Template{
+			templates: template.Must(template.ParseGlob("AtsTemplates/*")),
+		}
+		e.Renderer = t
+
+		e.GET("/", ats_index)
+		e.GET("/about", ats_about)
+		e.GET("/comments", ats_comments)
+		e.GET("/estimates", ats_estimates)
+		e.GET("/images", ats_images)
+		e.GET("/services", ats_services)
+		e.GET("/videos", ats_videos)
+		e.GET("/port1", ats_port1)
+		e.GET("/port2", ats_port2)
+		e.GET("/port3", ats_port3)
+		e.GET("/port4", ats_port4)
+		e.GET("/port5", ats_port5)
+		e.GET("/port6", ats_port6)
+		e.GET("/port7", ats_port7)
+		e.GET("/port8", ats_port8)
+		e.GET("/port9", ats_port9)
+		e.GET("/port10", ats_port10)
+		e.GET("/land1", ats_land1)
+		e.GET("/land2", ats_land2)
+		e.POST("/comupload", com_upload)
+		e.POST("/estupload", est_upload)
+		e.Static("/assets", "assets")
+		e.Logger.Fatal(e.Start(":80"))
+	}
 }
 
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
@@ -577,7 +615,7 @@ func est_upload(c echo.Context) error {
 		panic(err)
 	}
 	defer stmt.Close()
-	
+
 	status := "pending"
 
 	_, err = stmt.Exec(acctid, estid, name, address, city, phone, email, servdate, today, comment, media, status)
@@ -586,7 +624,7 @@ func est_upload(c echo.Context) error {
 	}
 
 	sendEstEmail(name, address, city, phone, email, servdate, comment)
-	
+
 	//need to send notification email to admin
 	return c.Render(http.StatusOK, "ats_thanks", "WORKED")
 }
@@ -659,7 +697,6 @@ func sendEstEmail(name string, address string, city string, phone string, email 
 		fmt.Println(res)
 	}
 }
-
 
 func badwords() []string {
 	var badwords []string
