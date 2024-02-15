@@ -6,15 +6,9 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/joho/godotenv"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	"github.com/mailjet/mailjet-apiv3-go/v4"
-	_ "github.com/mattn/go-sqlite3"
-	"golang.org/x/crypto/acme/autocert"
 	"html/template"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/mail"
@@ -23,6 +17,14 @@ import (
 	"strconv"
 	"time"
 	"unicode"
+
+	"github.com/google/uuid"
+	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/mailjet/mailjet-apiv3-go/v4"
+	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 type Template struct {
@@ -182,6 +184,11 @@ func main() {
 		e.GET("/port10", ats_port10)
 		e.GET("/land1", ats_land1)
 		e.GET("/land2", ats_land2)
+		e.GET("/land3", ats_land3)
+		e.GET("/land4", ats_land4)
+		e.GET("/land5", ats_land5)
+		e.GET("/land6", ats_land6)
+		e.GET("/land7", ats_land7)
 		e.POST("/comupload", com_upload)
 		e.POST("/estupload", est_upload)
 		e.Static("/assets", "assets")
@@ -215,6 +222,11 @@ func main() {
 		e.GET("/port10", ats_port10)
 		e.GET("/land1", ats_land1)
 		e.GET("/land2", ats_land2)
+		e.GET("/land3", ats_land3)
+		e.GET("/land4", ats_land4)
+		e.GET("/land5", ats_land5)
+		e.GET("/land6", ats_land6)
+		e.GET("/land7", ats_land7)
 		e.POST("/comupload", com_upload)
 		e.POST("/estupload", est_upload)
 		e.Static("/assets", "assets")
@@ -302,11 +314,35 @@ func ats_land2(c echo.Context) error {
 	return c.Render(http.StatusOK, "ats_land2", "WORKED")
 }
 
+func ats_land3(c echo.Context) error {
+	return c.Render(http.StatusOK, "ats_land3", "WORKED")
+}
+
+func ats_land4(c echo.Context) error {
+	return c.Render(http.StatusOK, "ats_land4", "WORKED")
+}
+
+func ats_land5(c echo.Context) error {
+	return c.Render(http.StatusOK, "ats_land5", "WORKED")
+}
+
+func ats_land6(c echo.Context) error {
+	return c.Render(http.StatusOK, "ats_land6", "WORKED")
+}
+
+func ats_land7(c echo.Context) error {
+	return c.Render(http.StatusOK, "ats_land7", "WORKED")
+}
+
 func com_upload(c echo.Context) error {
 	name := c.FormValue("name")
 	email := c.FormValue("email")
 	rating := c.FormValue("rating")
 	comment := c.FormValue("comment")
+	log.Println(name)
+	log.Println(email)
+	log.Println(rating)
+	log.Println(comment)
 	areInputsValid := checkComInputs(name, email, rating, comment)
 	if !areInputsValid {
 		return c.Render(http.StatusOK, "ats_comrejected", "WORKED")
