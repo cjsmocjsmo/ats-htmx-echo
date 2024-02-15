@@ -120,7 +120,8 @@ func createCertDir(cert_path string) {
 
 
 func init() {
-	godotenv.Load()
+
+	godotenv.Load("atshtmxecho.env")
 
 	dbpath := os.Getenv("ATS_DB_PATH")
 	createAccountsDB(dbpath)
