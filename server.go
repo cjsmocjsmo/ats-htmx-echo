@@ -11,12 +11,13 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
-	"net/mail"
+	// "net/mail"
 	"os"
 	"regexp"
 	"strconv"
 	"time"
 	"unicode"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
@@ -113,13 +114,13 @@ func createUploadsDir(uploads_path string) {
 	}
 }
 
-func createCertDir(cert_path string) {
-	err := os.MkdirAll(cert_path, 0755)
-	if err != nil {
-		fmt.Println(err)
-		fmt.Print("unable to create cert dir")
-	}
-}
+// func createCertDir(cert_path string) {
+// 	err := os.MkdirAll(cert_path, 0755)
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		fmt.Print("unable to create cert dir")
+// 	}
+// }
 
 func init() {
 
@@ -133,8 +134,8 @@ func init() {
 	uploadsPath := os.Getenv("ATS_UPLOADS_PATH")
 	createUploadsDir(uploadsPath)
 
-	certpath := os.Getenv("ATS_CERT_PATH")
-	createCertDir(certpath)
+	// certpath := os.Getenv("ATS_CERT_PATH")
+	// createCertDir(certpath)
 
 	filePath := os.Getenv("ATS_DB_PATH")
 	_, err3 := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, 0666)
@@ -419,19 +420,33 @@ func nameCheck(name string) bool {
 		return false
 	}
 	for _, char := range name {
-		if !unicode.IsLetter(char) || !unicode.IsNumber(char) {
+		if !unicode.IsLetter(char) || !unicode.IsNumber(char) || !unicode.IsSpace(char) {
 			return false
 		}
 	}
 	return true
 }
 
+func checkEmailParts(email string) bool {
+    // Split the email address into username and domain
+    parts := strings.Split(email, "@")
+    if len(parts) != 2 {
+        return false
+    }
+    
+    // Split the domain into domain name and extension
+    domainParts := strings.Split(parts[1], ".")
+    return len(domainParts) == 2
+}
+
 func emailCheck(email string) bool {
 	if len(email) < 1 {
 		return false
 	}
-	_, err := mail.ParseAddress(email)
-	return err == nil
+	return checkEmailParts(email)
+	
+	// _, err := mail.ParseAddress(email)
+	// return err == nil
 }
 
 func ratingCheck(rating string) bool {
@@ -439,6 +454,10 @@ func ratingCheck(rating string) bool {
 	if err != nil {
 		fmt.Println(err)
 		return false
+	}
+	if i > 5 || i == 0 {
+		return false
+	
 	}
 	return i >= 0 || i <= 5
 }
@@ -448,6 +467,7 @@ func commentCheck(comment string) bool {
 	regex := regexp.MustCompile(`\w+`)
 	words := regex.FindAllString(comment, -1)
 	for _, word := range words {
+		log.Println(word)
 		for _, bad_word := range bad_word_list {
 			if word == bad_word {
 				return true
