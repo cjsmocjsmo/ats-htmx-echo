@@ -415,8 +415,11 @@ func todaysDate() string {
 }
 
 func nameCheck(name string) bool {
+	if len(name) < 1 {
+		return false
+	}
 	for _, char := range name {
-		if !unicode.IsLetter(char) && !unicode.IsNumber(char) {
+		if !unicode.IsLetter(char) || !unicode.IsNumber(char) {
 			return false
 		}
 	}
@@ -424,6 +427,9 @@ func nameCheck(name string) bool {
 }
 
 func emailCheck(email string) bool {
+	if len(email) < 1 {
+		return false
+	}
 	_, err := mail.ParseAddress(email)
 	return err == nil
 }
