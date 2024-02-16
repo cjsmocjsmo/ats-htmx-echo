@@ -467,9 +467,10 @@ func ratingCheck(rating string) bool {
 }
 
 func commentCheck(comment string) bool {
+	trimmed_words := strings.TrimSpace(comment)
 	bad_word_list := badwords()
 	regex := regexp.MustCompile(`\w+`)
-	words := regex.FindAllString(comment, -1)
+	words := regex.FindAllString(trimmed_words, -1)
 	for _, word := range words {
 		log.Printf("word: %s", word)
 		
