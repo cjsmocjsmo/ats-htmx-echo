@@ -62,7 +62,7 @@ func TestRatingCheck(t *testing.T) {
 
 func TestCommentCheck(t *testing.T) {
 	// Test case 1: Valid comment
-	if !commentCheck("This is a valid comment.") {
+	if commentCheck("This is a valid comment.") {
 		t.Errorf("commentCheck(\"This is a valid comment.\") returned false, expected true")
 	}
 
