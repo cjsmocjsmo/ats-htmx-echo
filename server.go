@@ -427,18 +427,6 @@ func nameCheck(name string) bool {
 	}
 	return true
 }
-	
-	
-
-	
-
-	// for _, char := range name {
-	// 	if !unicode.IsLetter(char) || !unicode.IsNumber(char) || !unicode.IsSpace(char) {
-	// 		return false
-	// 	}
-	// }
-// 	return true
-// }
 
 func checkEmailParts(email string) bool {
     // Split the email address into username and domain
@@ -485,6 +473,7 @@ func commentCheck(comment string) bool {
 	for _, word := range words {
 		log.Println(word)
 		for _, bad_word := range bad_word_list {
+			log.Printf("word: %s\nbad word: %s\n", word, bad_word)
 			if word == bad_word {
 				return true
 			}
