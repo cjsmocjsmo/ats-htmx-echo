@@ -419,13 +419,26 @@ func nameCheck(name string) bool {
 	if len(name) < 1 {
 		return false
 	}
+
 	for _, char := range name {
-		if !unicode.IsLetter(char) || !unicode.IsNumber(char) || !unicode.IsSpace(char) {
+		if !unicode.IsLetter(char) && !unicode.IsNumber(char) && !unicode.IsSpace(char) {
 			return false
 		}
 	}
 	return true
 }
+	
+	
+
+	
+
+	// for _, char := range name {
+	// 	if !unicode.IsLetter(char) || !unicode.IsNumber(char) || !unicode.IsSpace(char) {
+	// 		return false
+	// 	}
+	// }
+// 	return true
+// }
 
 func checkEmailParts(email string) bool {
     // Split the email address into username and domain
@@ -450,6 +463,9 @@ func emailCheck(email string) bool {
 }
 
 func ratingCheck(rating string) bool {
+	if rating == "" {
+		return false
+	}
 	i, err := strconv.Atoi(rating)
 	if err != nil {
 		fmt.Println(err)
