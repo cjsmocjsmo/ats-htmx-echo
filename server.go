@@ -472,8 +472,10 @@ func commentCheck(comment string) bool {
 	words := regex.FindAllString(comment, -1)
 	for _, word := range words {
 		log.Println(word)
+		
 		for _, bad_word := range bad_word_list {
-			log.Printf("word: %s\nbad word: %s\n", word, bad_word)
+			log.Println(word)
+			log.Println(bad_word)
 			if word == bad_word {
 				return true
 			}
