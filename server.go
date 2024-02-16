@@ -24,7 +24,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 	_ "github.com/mattn/go-sqlite3"
-	"golang.org/x/crypto/acme/autocert"
+	// "golang.org/x/crypto/acme/autocert"
 )
 
 type Template struct {
@@ -154,9 +154,13 @@ func main() {
 	flag.Parse()
 
 	if *server_type == "https" {
-		e := echo.New()
 		certPath := os.Getenv("ATS_CERT_PATH")
-		e.AutoTLSManager.Cache = autocert.DirCache(certPath)
+		keyPath := os.Getenv("ATS_KEY_PATH")
+		e := echo.New()
+		// e.Use(middleware.TLSConfig{
+		// 	CertFile: certPath,
+		// 	KeyFile:  keyPath,
+		// })
 		e.Use(middleware.CORS())
 		e.Use(middleware.Gzip())
 		e.Use(middleware.Recover())
@@ -192,7 +196,7 @@ func main() {
 		e.POST("/comupload", com_upload)
 		e.POST("/estupload", est_upload)
 		e.Static("/assets", "assets")
-		e.Logger.Fatal(e.StartAutoTLS(":443"))
+		e.Logger.Fatal(e.StartTLS(":443", certPath, keyPath))
 	} else {
 		e := echo.New()
 		e.Use(middleware.CORS())
