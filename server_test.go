@@ -245,7 +245,7 @@ func TestSaveFile(t *testing.T) {
 	}
 
 	// Verify that the file was saved to the correct path
-	expectedPath := fmt.Sprintf("/path/to/uploads/%s", comid)
+	expectedPath := fmt.Sprintf("/usr/share/ats-htmx-echo/%s", comid)
 	if filePath != expectedPath {
 		t.Errorf("save_file returned an incorrect file path. Expected: %s, Got: %s", expectedPath, filePath)
 	}
