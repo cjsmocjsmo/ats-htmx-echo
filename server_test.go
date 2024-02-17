@@ -1,6 +1,13 @@
 package main
 
-import "testing"
+import (
+	"testing"
+	"io/ioutil"
+	"os"
+	"mime/multipart"
+	"fmt"
+	
+)
 
 func TestAtsUUID(t *testing.T) {
 	uuid := atsUUID()
@@ -190,6 +197,65 @@ func TestCheckEstInputs(t *testing.T) {
 	}
 }
 
+func TestCheckComInputs(t *testing.T) {
+	// Test case 1: Valid inputs
+	if !checkComInputs("John Doe", "john@example.com", "5", "Great service!") {
+		t.Error("Expected checkComInputs to return true for valid inputs")
+	}
+
+	// Test case 2: Empty name
+	if checkComInputs("", "john@example.com", "5", "Great service!") {
+		t.Error("Expected checkComInputs to return false for empty name")
+	}
+
+	// Test case 3: Invalid email
+	if checkComInputs("John Doe", "invalid_email", "5", "Great service!") {
+		t.Error("Expected checkComInputs to return false for invalid email")
+	}
+
+	// Test case 4: Invalid rating
+	if checkComInputs("John Doe", "john@example.com", "10", "Great service!") {
+		t.Error("Expected checkComInputs to return false for invalid rating")
+	}
+
+	// Test case 5: Empty comment
+	if checkComInputs("John Doe", "john@example.com", "5", "") {
+		t.Error("Expected checkComInputs to return false for empty comment")
+	}
+}
+
+func TestSaveFile(t *testing.T) {
+	// Create a temporary file for testing
+	tempFile, err := ioutil.TempFile("", "testfile")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(tempFile.Name())
+
+	// Create a mock multipart.FileHeader
+	fileHeader := &multipart.FileHeader{
+		Filename: tempFile.Name(),
+		Size:     100,
+	}
+
+	// Call the save_file function
+	comid := "12345"
+	filePath, err := save_file(comid, fileHeader)
+	if err != nil {
+		t.Errorf("save_file returned an error: %v", err)
+	}
+
+	// Verify that the file was saved to the correct path
+	expectedPath := fmt.Sprintf("/path/to/uploads/%s", comid)
+	if filePath != expectedPath {
+		t.Errorf("save_file returned an incorrect file path. Expected: %s, Got: %s", expectedPath, filePath)
+	}
+
+	// Verify that the file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		t.Errorf("save_file did not save the file to the expected path: %s", filePath)
+	}
+}
 
 
 

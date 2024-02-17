@@ -487,22 +487,31 @@ func commentCheck(comment string) bool {
 
 func addressCheck(address string) bool {
 	if len(address) < 1 {
-		return true
-	} else {
 		return false
 	}
+	//makde sure address only contains letters, numbers, and spaces
+	for _, char := range address {
+		if !unicode.IsLetter(char) && !unicode.IsNumber(char) && !unicode.IsSpace(char) {
+			return false
+		}
+	}
+	return true
 }
 
 func phoneCheck(phone string) bool {
+	if len(phone) < 1 {
+		return false
+	}
 	//insure phone numer is in the formate 555-555-5555
-	regex := regexp.MustCompile(`\d{3}-\d{3}-\d{4}`)
+	regex := regexp.MustCompile(`\d{3} \d{3} \d{4}`)
 	return regex.MatchString(phone)
 }
 
 func servDateCheck(servdate string) bool {
-	//insure servdate is in the formate 12-12-2006
-	regex := regexp.MustCompile(`\d{2}-\d{2}-\d{4}`)
+	//insure servdate is in the formate 12 12 2006
+	regex := regexp.MustCompile(`\d{2} \d{2} \d{4}`)
 	return regex.MatchString(servdate)
+	
 }
 
 func checkEstInputs(name string, address string, city string, phone string, email string, servdate string, comment string) bool {
