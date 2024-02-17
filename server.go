@@ -106,16 +106,16 @@ func createEstimatesDB(db_path string) {
 	}
 }
 
-func createUploadsDir(uploads_path string) {
-	_, err := os.Stat(uploads_path)
-	if os.IsNotExist(err) {
-		err := os.MkdirAll(uploads_path, 0755)
-		if err != nil {
-			fmt.Println(err)
-			fmt.Print("unable to create uploads dir")
-		}
-	}
-}
+// func createUploadsDir(uploads_path string) {
+// 	_, err := os.Stat(uploads_path)
+// 	if os.IsNotExist(err) {
+// 		err := os.MkdirAll(uploads_path, 0755)
+// 		if err != nil {
+// 			fmt.Println(err)
+// 			fmt.Print("unable to create uploads dir")
+// 		}
+// 	}
+// }
 
 // func dbFileExists(db_path string) bool {
 // 	_, err := os.Stat(db_path)
@@ -565,17 +565,21 @@ func save_file(comid string, file *multipart.FileHeader) (string, error) {
 	out_dir := os.Getenv("ATS_UPLOADS_PATH")
 	out_path := out_dir + "/" + comid + "_boo.webp"
 	log.Printf("out_path %s", out_path)
+	fmt.Printf("out_path %s", out_path)
 	log.Printf("file.Filename: %s", file.Filename)
+	fmt.Printf("file.Filename: %s", file.Filename)
 	log.Println(file)
 	src, err := file.Open()
 	if err != nil {
 		log.Println("unable to open src file.Filename")
+		fmt.Println("unable to open src file.Filename")
 		return "", err
 	}
 	defer src.Close()
 	dst, err := os.Create(out_path)
 	if err != nil {
 		log.Printf("unable to create dst file %s", out_path)
+		fmt.Printf("unable to create dst file %s", out_path)
 		return "", err
 	}
 	defer dst.Close()

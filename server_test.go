@@ -4,7 +4,7 @@ import (
 	"testing"
 	"os"
 	"mime/multipart"
-	"fmt"
+	// "fmt"
 
 )
 
@@ -223,36 +223,38 @@ func TestCheckComInputs(t *testing.T) {
 	}
 }
 
+
 func TestSaveFile(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile := "/usr/share/ats-htmx-echo/testfile.webp"
-	
-	defer os.Remove(tempFile)
+	file, err := os.Open("/usr/share/ats-htmx-echo/testfile.webp")
+	if err != nil {
+		t.Fatalf("Failed to open test file: %v", err)
+	}
+	defer file.Close()
 
-	// Create a mock multipart.FileHeader
+	// Create a temporary directory for testing
+	tempDir := t.TempDir()
+
+	// Create a mock file header
 	fileHeader := &multipart.FileHeader{
-		Filename: tempFile,
-		Size:     219016,
+		Filename: "testfile.webp",
 	}
 
 	// Call the save_file function
-	comid := "12345"
-	filePath, err := save_file(comid, fileHeader)
+	filePath, err := save_file("comid123", fileHeader)
 	if err != nil {
-		t.Errorf("save_file returned an error: %v", err)
+		t.Fatalf("save_file failed: %v", err)
 	}
 
 	// Verify that the file was saved to the correct path
-	expectedPath := fmt.Sprintf("/usr/share/ats-htmx-echo/UpLoads/%s", comid)
+	expectedPath := tempDir + "/comid123_testfile.webp"
 	if filePath != expectedPath {
-		t.Errorf("save_file returned an incorrect file path. Expected: %s, Got: %s", expectedPath, filePath)
+		t.Errorf("save_file returned incorrect file path. Expected: %s, Got: %s", expectedPath, filePath)
 	}
 
 	// Verify that the file exists
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		t.Errorf("save_file did not save the file to the expected path: %s", filePath)
+	_, err = os.Stat(filePath)
+	if os.IsNotExist(err) {
+		t.Errorf("save_file failed to save the file. File does not exist at path: %s", filePath)
 	}
 }
-
-
-
