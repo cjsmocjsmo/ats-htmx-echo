@@ -132,7 +132,8 @@ func createUploadsDir(uploads_path string) {
 
 func init() {
 
-	godotenv.Load("atshtmxecho.env")
+	// godotenv.Load("atshtmxecho.env")
+	godotenv.Load("test.env")
 
 	// if !dbFileExists(os.Getenv("ATS_DB_PATH")) {
 	// 	log.Println("DB file does not exist creating it")
