@@ -225,7 +225,7 @@ func TestCheckComInputs(t *testing.T) {
 
 func TestSaveFile(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile := "/usr/share/ats-htmx-echo/UpLoads"
+	tempFile := "/usr/share/ats-htmx-echo/testfile.webp"
 	
 	defer os.Remove(tempFile)
 
