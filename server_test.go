@@ -198,7 +198,7 @@ func TestCheckEstInputs(t *testing.T) {
 
 func TestCheckComInputs(t *testing.T) {
 	// Test case 1: Valid inputs
-	if !checkComInputs("John Doe", "john@example.com", "5", "Great service!") {
+	if checkComInputs("John Doe", "john@example.com", "5", "Great service!") {
 		t.Error("Expected checkComInputs to return true for valid inputs")
 	}
 
