@@ -563,6 +563,7 @@ func checkComInputs(name string, email string, rating string, comment string) bo
 func save_file(comid string, file *multipart.FileHeader) (string, error) {
 	out_dir := os.Getenv("ATS_UPLOADS_PATH")
 	out_path := out_dir + "/" + comid + "_" + file.Filename
+	
 	src, err := file.Open()
 	if err != nil {
 		return "", err

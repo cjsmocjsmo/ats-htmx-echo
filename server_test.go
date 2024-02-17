@@ -225,7 +225,7 @@ func TestCheckComInputs(t *testing.T) {
 
 func TestSaveFile(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile, err := os.CreateTemp("/usr/share/ats-htmx-echo", "testfile")
+	tempFile, err := os.CreateTemp("/usr/share/ats-htmx-echo/UpLoads", "testfile")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -245,7 +245,7 @@ func TestSaveFile(t *testing.T) {
 	}
 
 	// Verify that the file was saved to the correct path
-	expectedPath := fmt.Sprintf("/usr/share/ats-htmx-echo/%s", comid)
+	expectedPath := fmt.Sprintf("/usr/share/ats-htmx-echo/UpLoads/%s", comid)
 	if filePath != expectedPath {
 		t.Errorf("save_file returned an incorrect file path. Expected: %s, Got: %s", expectedPath, filePath)
 	}
