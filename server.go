@@ -107,11 +107,19 @@ func createEstimatesDB(db_path string) {
 }
 
 func createUploadsDir(uploads_path string) {
-	err := os.MkdirAll(uploads_path, 0755)
-	if err != nil {
-		fmt.Println(err)
-		fmt.Print("unable to create uploads dir")
+	_, err := os.Stat(uploads_path)
+	if os.IsNotExist(err) {
+		err := os.MkdirAll(uploads_path, 0755)
+		if err != nil {
+			fmt.Println(err)
+			fmt.Print("unable to create uploads dir")
+		}
 	}
+}
+
+func dbFileExists(db_path string) bool {
+	_, err := os.Stat(db_path)
+	return os.IsNotExist(err) 
 }
 
 // func createCertDir(cert_path string) {
@@ -126,10 +134,13 @@ func init() {
 
 	godotenv.Load("atshtmxecho.env")
 
-	dbpath := os.Getenv("ATS_DB_PATH")
-	createAccountsDB(dbpath)
-	createCommentsDB(dbpath)
-	createEstimatesDB(dbpath)
+	if !dbFileExists(os.Getenv("ATS_DB_PATH")) {
+		log.Println("DB file does not exist creating it")
+		dbpath := os.Getenv("ATS_DB_PATH")
+		createAccountsDB(dbpath)
+		createCommentsDB(dbpath)
+		createEstimatesDB(dbpath)
+	}
 
 	uploadsPath := os.Getenv("ATS_UPLOADS_PATH")
 	createUploadsDir(uploadsPath)
@@ -137,17 +148,17 @@ func init() {
 	// certpath := os.Getenv("ATS_CERT_PATH")
 	// createCertDir(certpath)
 
-	filePath := os.Getenv("ATS_DB_PATH")
-	_, err3 := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, 0666)
-	if err3 != nil {
-		if os.IsExist(err3) {
-			fmt.Println("file exists")
-		} else {
-			fmt.Println(err3)
-			fmt.Print("unable to create db file")
-		}
+	// filePath := os.Getenv("ATS_DB_PATH")
+	// _, err3 := os.OpenFile(filePath, os.O_CREATE|os.O_EXCL, 0755)
+	// if err3 != nil {
+	// 	if os.IsExist(err3) {
+	// 		fmt.Println("file exists")
+	// 	} else {
+	// 		fmt.Println(err3)
+	// 		fmt.Print("unable to create db file")
+	// 	}
 
-	}
+	// }
 }
 
 func main() {

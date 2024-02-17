@@ -6,7 +6,7 @@ import (
 	"os"
 	"mime/multipart"
 	"fmt"
-	
+
 )
 
 func TestAtsUUID(t *testing.T) {
@@ -103,8 +103,8 @@ func TestAddressCheck(t *testing.T) {
 
 func TestPhoneCheck(t *testing.T) {
 	// Test case 1: Valid phone number
-	if !phoneCheck("1234567890") {
-		t.Errorf("phoneCheck(\"1234567890\") returned false, expected true")
+	if !phoneCheck("123 456 7890") {
+		t.Errorf("phoneCheck(\"123 456 7890\") returned false, expected true")
 	}
 
 	// Test case 2: Empty phone number
