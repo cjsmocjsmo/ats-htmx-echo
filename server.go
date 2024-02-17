@@ -568,11 +568,13 @@ func save_file(comid string, file *multipart.FileHeader) (string, error) {
 	log.Println(file)
 	src, err := file.Open()
 	if err != nil {
+		log.Println("unable to open src file.Filename")
 		return "", err
 	}
 	defer src.Close()
 	dst, err := os.Create(out_path)
 	if err != nil {
+		log.Printf("unable to create dst file %s", out_path)
 		return "", err
 	}
 	defer dst.Close()
