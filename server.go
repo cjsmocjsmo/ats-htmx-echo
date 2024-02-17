@@ -142,8 +142,8 @@ func init() {
 		createEstimatesDB(dbpath)
 	// }
 
-	uploadsPath := os.Getenv("ATS_UPLOADS_PATH")
-	createUploadsDir(uploadsPath)
+	// uploadsPath := os.Getenv("ATS_UPLOADS_PATH")
+	// createUploadsDir(uploadsPath)
 
 	// certpath := os.Getenv("ATS_CERT_PATH")
 	// createCertDir(certpath)
@@ -562,7 +562,7 @@ func checkComInputs(name string, email string, rating string, comment string) bo
 
 func save_file(comid string, file *multipart.FileHeader) (string, error) {
 	out_dir := os.Getenv("ATS_UPLOADS_PATH")
-	out_path := out_dir + "/" + comid + "_" + file.Filename
+	out_path := out_dir + "/" + comid + "_boo.webp"
 	log.Printf("out_path %s", out_path)
 	log.Printf("file.Filename: %s", file.Filename)
 	log.Println(file)
