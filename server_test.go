@@ -225,16 +225,14 @@ func TestCheckComInputs(t *testing.T) {
 
 func TestSaveFile(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile, err := os.CreateTemp("/usr/share/ats-htmx-echo/UpLoads", "testfile")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Remove(tempFile.Name())
+	tempFile := "/usr/share/ats-htmx-echo/UpLoads"
+	
+	defer os.Remove(tempFile)
 
 	// Create a mock multipart.FileHeader
 	fileHeader := &multipart.FileHeader{
-		Filename: tempFile.Name(),
-		Size:     100,
+		Filename: tempFile,
+		Size:     219016,
 	}
 
 	// Call the save_file function
