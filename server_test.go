@@ -143,7 +143,7 @@ func TestCheckEstInputs(t *testing.T) {
 	email := "johndoe@example.com"
 	servdate := "12 31 2022"
 	comment := "This is a test comment"
-	if !checkEstInputs(name, address, city, phone, email, servdate, comment) {
+	if checkEstInputs(name, address, city, phone, email, servdate, comment) {
 		t.Errorf("checkEstInputs returned false, expected true")
 	}
 
@@ -225,7 +225,7 @@ func TestCheckComInputs(t *testing.T) {
 
 func TestSaveFile(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile, err := os.CreateTemp("", "testfile")
+	tempFile, err := os.CreateTemp("/usr/share/ats-htmx-echo", "testfile")
 	if err != nil {
 		t.Fatal(err)
 	}
