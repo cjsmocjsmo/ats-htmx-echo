@@ -483,11 +483,11 @@ func commentCheck(comment string) bool {
 	regex := regexp.MustCompile(`\w+`)
 	words := regex.FindAllString(trimmed_words, -1)
 	for _, word := range words {
-		log.Printf("word: %s", word)
+		// log.Printf("word: %s", word)
 		
 		for _, bad_word := range bad_word_list {
-			log.Printf("word: %s", word)
-			log.Println(bad_word)
+			// log.Printf("word: %s", word)
+			// log.Println(bad_word)
 			if word == bad_word {
 				return true
 			}
