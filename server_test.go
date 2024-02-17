@@ -2,7 +2,6 @@ package main
 
 import (
 	"testing"
-	"io/ioutil"
 	"os"
 	"mime/multipart"
 	"fmt"
@@ -226,7 +225,7 @@ func TestCheckComInputs(t *testing.T) {
 
 func TestSaveFile(t *testing.T) {
 	// Create a temporary file for testing
-	tempFile, err := ioutil.TempFile("", "testfile")
+	tempFile, err := os.CreateTemp("", "testfile")
 	if err != nil {
 		t.Fatal(err)
 	}
